@@ -1,4 +1,4 @@
-package com.phoneshop.org.model;
+package com.phoneshop.org.model.entity;
 
 
 import jakarta.persistence.Column;
@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +24,11 @@ public class Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "model_id")
     private Long modelId;
-
+    
     @Column(name = "model_name")
     private String modelName;
+
+    @ManyToOne
+    @JoinColumn(name = "brandId")
+    private Brand brand;
 }

@@ -1,9 +1,17 @@
 package com.phoneshop.org.service;
 
-import com.phoneshop.org.model.Brand;
+import java.util.List;
+
+import com.phoneshop.org.model.entity.Brand;
 
 public interface BrandService {
-
     Brand createbrand(Brand brand);
+    List<Brand> getAllBrands();
+    Brand getBrandById(Long id);
+    void deleteBrandById(Long id);
+    Brand updateBrand(Long id, Brand brand);
+
+    
+
 
 }
