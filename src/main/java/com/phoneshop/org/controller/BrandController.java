@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.phoneshop.org.dto.BrandDTO;
+import com.phoneshop.org.mapper.BrandMapper;
 import com.phoneshop.org.model.entity.Brand;
 import com.phoneshop.org.model.response.ApiResponse;
 import com.phoneshop.org.service.BrandService;
-import com.phoneshop.org.service.mapper.Mapper;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,21 +31,23 @@ public class BrandController {
      // inject used contructor
      private final BrandService brandService;
   
+     @Operation(summary = "Create brand", description = "Create a brand to database")
      @PostMapping
      public ResponseEntity<?> createBrand(@RequestBody BrandDTO brandDTO) {
-      Brand brand = Mapper.toBrand(brandDTO);
+      Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
       brand = brandService.createbrand(brand);
       return ResponseEntity.status(HttpStatus.CREATED).body(
         ApiResponse.builder()
         .success(true)
         .message("Brand created successfully")
         .status(HttpStatus.CREATED)
-        .payload(Mapper.toBrandDTO(brand))
+        .payload(BrandMapper.INSTANCE.toBrandDTO(brand))
         .timestemp(LocalTime.now())
         .build()
       );
      }
 
+     @Operation(summary = "Get all brands", description = "Get all brands that have in database")
      @GetMapping
      public ResponseEntity<?> getAllBrands() {
       List<Brand> brands = brandService.getAllBrands();
@@ -59,6 +62,7 @@ public class BrandController {
          );
      }
 
+      @Operation(summary = "Get brand by id", description = "Get brand by id")
      @GetMapping("{brand-id}")
      public ResponseEntity<?> getBrandById(@PathVariable("brand-id")  Long id){
       Brand brand = brandService.getBrandById(id);
@@ -73,6 +77,7 @@ public class BrandController {
        );
      }
 
+      @Operation(summary = "Delete brand by id", description = "Delete brand by id")
      @DeleteMapping("{brand-id}")
      public ResponseEntity<?> deleteBrandById(@PathVariable("brand-id") Long id){
       brandService.deleteBrandById(id);
@@ -86,10 +91,11 @@ public class BrandController {
      );
      }
      
+      @Operation(summary = "Update brand by id", description = "Update brand by id")
      @PutMapping("{brand-id}")
-     public ResponseEntity<?> updateBrandById(@PathVariable("brand-id") Long id,@RequestBody BrandDTO brandDto){
-      Brand brand = Mapper.toBrand(brandDto);
-      brand = brandService.updateBrand(id, brand);
+     public ResponseEntity<?> updateBrandById(@PathVariable("brand-id") Long id,@RequestBody BrandDTO brandDTO){
+     Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
+     brand = brandService.updateBrandById(id, brand);
       return ResponseEntity.ok(
         ApiResponse.builder()
         .success(true)

@@ -34,7 +34,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand getBrandById(Long id) {
-      return brandRepository.findById(id).orElseThrow(() -> new NotFoundException(" Brand with id "+ id +" not found"));
+      return brandRepository.findById(id).orElseThrow(() -> new NotFoundException(" Brand with id " + id + " is not found" ));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand updateBrand(Long id, Brand brand) {
+    public Brand updateBrandById(Long id, Brand brand) {
       Brand existingBrand = brandRepository.findById(id).orElseThrow(() -> new NotFoundException(" Brand with id " + id + " is not found" ));
       existingBrand.setBrandName(brand.getBrandName());
       return brandRepository.save(existingBrand);

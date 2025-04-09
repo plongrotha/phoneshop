@@ -9,7 +9,7 @@ public interface BrandService {
     List<Brand> getAllBrands();
     Brand getBrandById(Long id);
     void deleteBrandById(Long id);
-    Brand updateBrand(Long id, Brand brand);
+    Brand updateBrandById(Long id, Brand brand);
 
     
 
