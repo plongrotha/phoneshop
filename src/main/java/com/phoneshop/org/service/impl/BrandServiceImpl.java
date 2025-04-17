@@ -1,9 +1,10 @@
 package com.phoneshop.org.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springdoc.core.converters.models.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.phoneshop.org.exception.NotFoundException;
 import com.phoneshop.org.model.entity.Brand;
@@ -25,24 +26,24 @@ public class BrandServiceImpl implements BrandService {
 		return brandRepository.save(brand);
 	}
 
-	@Override
-	public List<Brand> getAllBrands() {
-		List<Brand> brands = brandRepository.findAll();
-		if (brands.isEmpty()) {
-			throw new NotFoundException("No Brands found");
-		}
-		return brands;
-	}
+	// @Override
+	// public List<Brand> getAllBrands() {
+	// 	List<Brand> brands = brandRepository.findAll();
+	// 	if (brands.isEmpty()) {
+	// 		throw new NotFoundException("No Brands found");
+	// 	}
+	// 	return brands;
+	// }
 
   
-  @Override
-  public List<Brand> getAllBrands(String name) {
-    List<Brand> brands = brandRepository.findByBrandNameContaining(name);
-    if (brands.isEmpty()) {
-      throw new NotFoundException("No Brands found with name " + name);
-    }
-    return brands;
-  } 
+  // @Override
+  // public List<Brand> getAllBrands(String name) {
+  //   List<Brand> brands = brandRepository.findByBrandNameContaining(name);
+  //   if (brands.isEmpty()) {
+  //     throw new NotFoundException("No Brands found with name " + name);
+  //   }
+  //   return brands;
+  // } 
 
 	@Override
 	public Brand getBrandById(Long id) {
@@ -70,6 +71,11 @@ public class BrandServiceImpl implements BrandService {
 
 		return "Brand with id " + id + " has been deleted successfully.";
 	}
+
+  @Override
+  public List<Brand> getAllBrands(Map<String, String> params) {
+    throw new UnsupportedOperationException("Unimplemented method 'getAllBrands'");
+  }
 
 
   
