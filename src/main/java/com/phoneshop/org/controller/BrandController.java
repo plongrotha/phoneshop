@@ -81,7 +81,7 @@ public class BrandController {
      @DeleteMapping("{brand-id}")
      public ResponseEntity<?> deleteBrandById(@PathVariable("brand-id") Long id){
       brandService.deleteBrandById(id);
-     return ResponseEntity.ok(
+       return ResponseEntity.ok(
       ApiResponse.builder()
       .success(true)
       .message("Brand deleted successfully")
@@ -95,6 +95,9 @@ public class BrandController {
      @PutMapping("{brand-id}")
      public ResponseEntity<?> updateBrandById(@PathVariable("brand-id") Long id,@RequestBody BrandDTO brandDTO){
      Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
+     brand.setBrandName(brandDTO.getBrandName());
+     brand.setVersion(brandDTO.getVs());
+        // brand.setBrandId(id);
      brand = brandService.updateBrandById(id, brand);
       return ResponseEntity.ok(
         ApiResponse.builder()
@@ -104,6 +107,6 @@ public class BrandController {
         .payload(brand)
         .timestemp(LocalTime.now())
         .build()
-      );
+       );
      }
 }

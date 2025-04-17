@@ -48,5 +48,6 @@ public class BrandServiceImpl implements BrandService {
       Brand existingBrand = brandRepository.findById(id).orElseThrow(() -> new NotFoundException(" Brand with id " + id + " is not found" ));
       existingBrand.setBrandName(brand.getBrandName());
       return brandRepository.save(existingBrand);
-    }
+      }
+
 }
