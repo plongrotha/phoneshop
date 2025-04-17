@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalException {
 
-  @ExceptionHandler(NotFoundException.class)
-  public ProblemDetail handleNotFoundException(NotFoundException e) {
-    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-    problemDetail.setTitle("Not Found Exception");
-    return problemDetail;
+	@ExceptionHandler(NotFoundException.class)
+	public ProblemDetail handleNotFoundException(NotFoundException e) {
+		ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+		problemDetail.setTitle("Not Found Exception");
+		return problemDetail;
 
-  }
-
+	}
 
 }

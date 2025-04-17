@@ -5,14 +5,11 @@ import java.util.List;
 import com.phoneshop.org.model.entity.Brand;
 
 public interface BrandService {
-    Brand createbrand(Brand brand);
-    List<Brand> getAllBrands();
-    Brand getBrandById(Long id);
-    void deleteBrandById(Long id);
-    Brand updateBrandById(Long id, Brand brand);
-
-
-    
-
+	Brand createBrand(Brand brand);
+	Brand getBrandById(Long id);
+	String deleteBrandById(Long id);
+	Brand updateBrandById(Long id, Brand brand);
+	List<Brand> getAllBrands();
+  List<Brand> getAllBrands(String name);
 
 }

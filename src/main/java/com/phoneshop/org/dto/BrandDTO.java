@@ -6,6 +6,6 @@ import lombok.Data;
 public class BrandDTO {
 	// private Long brandId;
 	private String brandName;
-	 private Integer vs;
+	private Integer vs;
 
 }
