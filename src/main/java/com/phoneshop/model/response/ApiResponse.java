@@ -1,6 +1,5 @@
-package com.phoneshop.org.model.response;
+package com.phoneshop.model.response;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.springframework.http.HttpStatus;
@@ -20,6 +19,6 @@ public class ApiResponse<T>{
   private String message;
   private T payload;
   private HttpStatus status;
-  private LocalTime timestemp;
+  private LocalTime timestamp;
 
 }

@@ -1,21 +1,21 @@
-package com.phoneshop.org.mapper;
+package com.phoneshop.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import com.phoneshop.org.dto.BrandDTO;
-import com.phoneshop.org.model.entity.Brand;
+import com.phoneshop.dto.BrandDTO;
+import com.phoneshop.model.entity.Brand;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface BrandMapper {
 
-	// tranform from Brand -> BrandDTO
-
+	// transform from Brand -> BrandDT
 	BrandMapper INSTANCE = Mappers.getMapper(BrandMapper.class);
 
-	@Mapping(target = "version", source = "vs")
+	@Mapping(source = "vs", target = "version")
 	Brand toBrand(BrandDTO brandDTO);
 
+	@Mapping(source = "version", target = "vs")
 	BrandDTO toBrandDTO(Brand brand);
 }

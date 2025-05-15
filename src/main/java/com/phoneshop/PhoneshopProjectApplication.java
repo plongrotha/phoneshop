@@ -1,12 +1,15 @@
-package com.phoneshop.org;
+package com.phoneshop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PhoneshopprojectApplication {
+public class PhoneshopProjectApplication {
+	
     public static void main(String[] args) {
-        SpringApplication.run(PhoneshopprojectApplication.class, args);
+
+        SpringApplication.run(PhoneshopProjectApplication.class, args);
     }
 
 }
+

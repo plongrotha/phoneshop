@@ -1,4 +1,4 @@
-package com.phoneshop.org.exception;
+package com.phoneshop.exception;
 
 public class NotFoundException extends RuntimeException {
 

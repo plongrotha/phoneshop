@@ -1,4 +1,4 @@
-package com.phoneshop.org.model.entity;
+package com.phoneshop.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
