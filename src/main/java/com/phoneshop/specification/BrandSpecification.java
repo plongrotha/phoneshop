@@ -20,30 +20,24 @@ import lombok.RequiredArgsConstructor;
 public class BrandSpecification implements Specification<Brand> {
 
   private final BrandFilter brandFilter;
+
   List<Predicate> predicates = new ArrayList<>();
 
   @Override
-  @Nullable
-  public Predicate toPredicate(Root<Brand> brand, @Nullable CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+  public Predicate toPredicate(Root<Brand> brand, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
-    if (brandFilter == null) {
-      return null;
-    }
-
-    if(brandFilter.getBrandName() != null) {
-      //  Predicate name = brand.get("name").in(brandFilter.getName());
-     Predicate name = criteriaBuilder.like(brand.get("brandname"),"%" + brandFilter.getBrandName() + "%");
+    if(brandFilter.getName() != null){
+      Predicate name =  brand.get("name").in(brandFilter.getName());
       predicates.add(name);
     }
 
-    if(brandFilter.getId() != null) {
+    if(brandFilter.getId() != null){
       Predicate id = brand.get("id").in(brandFilter.getId());
       predicates.add(id);
     }
+//     predicates.toArray(new Predicate[0]);
+    return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
 
-    // return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-    return criteriaBuilder.and(predicates.toArray(Predicate[]::new)); // use constructor reference
   }
-
 
 }

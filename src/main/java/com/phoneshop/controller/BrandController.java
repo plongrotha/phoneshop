@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.phoneshop.exception.NotFoundException;
+import com.phoneshop.mapper.BrandMapperImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,6 +36,7 @@ public class BrandController {
 
 	// inject used constructor
 	private final BrandService brandService;
+	private final BrandMapperImpl brandMapperImpl;
 
 	@Operation(summary = "Create brand", description = "Create a brand to database")
 	@PostMapping
@@ -49,17 +52,18 @@ public class BrandController {
 				.timestamp(LocalTime.now()).build());
 	}
 
-   @Operation(summary = "Get all brands", description = "Get all brands that have in database")
-   @GetMapping
-   public ResponseEntity<?> getAllBrands(){
-     List<BrandDTO> brands = brandService.getAllBrands().stream().map(brand -> BrandMapper.INSTANCE.toBrandDTO(brand)).collect(Collectors.toList());
-     return ResponseEntity.ok(
-			 ApiResponse.<List<BrandDTO>>builder()
-					 .success(true).message("All brands found")
-					 .payload(brands)
-					 .timestamp(LocalTime.now()).build()
-	 );
-   }
+//   @Operation(summary = "Get all brands", description = "Get all brands that have in database")
+//   @GetMapping
+//   public ResponseEntity<?> getAllBrands(){
+//     List<BrandDTO> brands = brandService.getAllBrands().stream().map(BrandMapper.INSTANCE::toBrandDTO).collect(Collectors.toList());
+//     return ResponseEntity.ok(
+//			 ApiResponse.<List<BrandDTO>>builder()
+//					 .success(true).message("All brands found")
+//					 .status(HttpStatus.OK)
+//					 .payload(brands)
+//					 .timestamp(LocalTime.now()).build()
+//	 );
+//   }
 
 	@Operation(summary = "Get brand by id", description = "Get brand by id")
 	@GetMapping("{brand-id}")
@@ -96,19 +100,27 @@ public class BrandController {
 				.message("updated successfully").payload(brandService.updateBrandById(id, brand)).timestamp(LocalTime.now()).build());
 	}
 
-	@Operation(summary = "Get all brands by name", description = "Get all brands that have in database")
-	@GetMapping("{brand-name}")
-	public ResponseEntity<?> getAllBrands(@RequestParam("brand-name") Map<String,String> params, @PathVariable("brand-name") String parameter) {
-		List<BrandDTO> brands = brandService.getAllBrands(params).stream().map(BrandMapper.INSTANCE::toBrandDTO)
+	@Operation(summary = "Get all brands dynamic", description = "Get all brands that have in database")
+	@GetMapping
+	public ResponseEntity<?> getBrands(@RequestParam Map<String,String> params) {
+		List<BrandDTO> brands = brandService
+				.getAllBrands(params)
+				.stream().map(BrandMapper.INSTANCE::toBrandDTO)
 				.collect(Collectors.toList());
+
+		if (brands.isEmpty()) {
+			throw new NotFoundException("No brands found");
+		}
+
 		return ResponseEntity.ok(
-				ApiResponse.builder()
+				ApiResponse.<List<BrandDTO>>builder()
 						.success(true)
-						.message("Brands retrieved successfully")
-						.payload(brands)
 						.status(HttpStatus.OK)
+						.message("brands retrieved successfully")
+						.payload(brands)
 						.timestamp(LocalTime.now())
-						.build());
+						.build()
+		);
 	}
 
 

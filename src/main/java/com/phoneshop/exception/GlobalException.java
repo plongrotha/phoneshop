@@ -16,12 +16,12 @@ public class GlobalException {
 	@ExceptionHandler(NotFoundException.class)
 	public ProblemDetail handleNotFoundException(NotFoundException e) {
 		ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-		problemDetail.setTitle("Not Found Exception");
+		problemDetail.setTitle("Not Found.");
 		return problemDetail;
 	}
 
    @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ProblemDetail handlValidationException(MethodArgumentNotValidException e){
+  public ProblemDetail handleValidationException(MethodArgumentNotValidException e){
     ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
     detail.setTitle("validation is false.");
     Map<String, String> err = new HashMap<>();

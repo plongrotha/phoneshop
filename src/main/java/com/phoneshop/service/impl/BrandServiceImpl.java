@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.phoneshop.specification.BrandFilter;
+import com.phoneshop.specification.BrandSpecification;
 import org.springframework.stereotype.Service;
 
 import com.phoneshop.exception.NotFoundException;
@@ -13,6 +15,8 @@ import com.phoneshop.service.BrandService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.swing.text.html.Option;
 
 @Slf4j
 @Service
@@ -29,6 +33,7 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public List<Brand> getAllBrands() {
 		List<Brand> brands = brandRepository.findAll();
+		log.info("get all brands : {}", brands.size());
 		return Optional.of(brands).filter(list -> !list.isEmpty()).orElseThrow(() -> new NotFoundException("No Brands found."));
 	}
 
@@ -51,24 +56,29 @@ public class BrandServiceImpl implements BrandService {
 		Brand brand = getBrandById(id);
         log.info("deleting brand with id : -> {}", id);
 		brandRepository.delete(brand);
+	}
 
+	@Override
+	public List<Brand> getAllBrands(String name) {
+        return brandRepository.findByBrandNameContaining(name);
 	}
 
   @Override
   public List<Brand> getAllBrands(Map<String, String> params) {
-    throw new UnsupportedOperationException("Filtering with parameters is not yet implemented.");
+	  BrandFilter brandFilter = new BrandFilter();
+
+	  if(params.containsKey("name")){
+		  String name = params.get("name");
+		  brandFilter.setName(name);
+	  }
+
+	  if (params.containsKey("id")){
+		  String id = params.get("id");
+		  brandFilter.setId(Integer.parseInt(id));
+	  }
+	  BrandSpecification brandSpecification = new BrandSpecification(brandFilter);
+
+	  List<Brand> brands = brandRepository.findAll(brandSpecification);
+		return Optional.of(brands).orElseThrow(() -> new NotFoundException("No Brands found."));
   }
-
-
-
-
-   @Override
-   public List<Brand> getAllBrands(String name) {
-     List<Brand> brands = brandRepository.findByBrandNameContaining(name);
-     if (brands.isEmpty()) {
-       throw new NotFoundException("No Brands found with name " +  name);
-     }
-     return brands;
-   }
-
 }
