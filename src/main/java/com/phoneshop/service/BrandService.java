@@ -6,12 +6,17 @@ import java.util.Map;
 import com.phoneshop.model.entity.Brand;
 
 public interface BrandService {
-	Brand createBrand(Brand brand);
-	Brand getBrandById(Long id);
-	void deleteBrandById(Long id);
-	Brand updateBrandById(Long id, Brand brand);
-	 List<Brand> getAllBrands();
-     List<Brand> getAllBrands(String name);
-  List<Brand> getAllBrands(Map<String, String> params);
+    void createBrand(Brand brand);
+
+    Brand getBrandById(Long id);
+
+    void deleteBrandById(Long id);
+
+    Brand updateBrandById(Long id, Brand brand);
+
+    List<Brand> getAllBrands();
+
+    List<Brand> getAllBrands(String name);
+
 
 }

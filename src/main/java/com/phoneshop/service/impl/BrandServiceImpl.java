@@ -1,22 +1,18 @@
 package com.phoneshop.service.impl;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import com.phoneshop.specification.BrandFilter;
-import com.phoneshop.specification.BrandSpecification;
-import org.springframework.stereotype.Service;
-
 import com.phoneshop.exception.NotFoundException;
 import com.phoneshop.model.entity.Brand;
 import com.phoneshop.repository.BrandRepository;
 import com.phoneshop.service.BrandService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 
 @Slf4j
 @Service
@@ -24,11 +20,17 @@ import javax.swing.text.html.Option;
 public class BrandServiceImpl implements BrandService {
 
 	private final BrandRepository brandRepository;
+//
+//	private final Function<Long, Brand> findBrandById = (id) -> brandRepository.findById(id).orElseThrow((() -> new NotFoundException("Brand with id " + id + " not found")));
+//	private final Consumer<Brand> insertBrand = brandRepository::save;
 
+
+	// i deleted return type Brand
 	@Override
-	public Brand createBrand(Brand brand) {
-		return brandRepository.save(brand);
-	}
+	public void createBrand(Brand brand) {
+		brandRepository.save(brand);
+    }
+
 
 	@Override
 	public List<Brand> getAllBrands() {
@@ -40,7 +42,8 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public Brand getBrandById(Long id) {
         log.info("fetching brand by id => {}", id);
-		return brandRepository.findById(id).orElseThrow(() -> new NotFoundException(" Brand with id " + id + " is not found"));
+		return brandRepository.findById(id).orElseThrow(() -> new NotFoundException("No Brand found."));
+//		return brandRepository.findById(id).orElseThrow(() -> new NotFoundException(" Brand with id " + id + " is not found"));
 	}
 
 	@Override
@@ -63,22 +66,5 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.findByBrandNameContaining(name);
 	}
 
-  @Override
-  public List<Brand> getAllBrands(Map<String, String> params) {
-	  BrandFilter brandFilter = new BrandFilter();
 
-	  if(params.containsKey("name")){
-		  String name = params.get("name");
-		  brandFilter.setName(name);
-	  }
-
-	  if (params.containsKey("id")){
-		  String id = params.get("id");
-		  brandFilter.setId(Integer.parseInt(id));
-	  }
-	  BrandSpecification brandSpecification = new BrandSpecification(brandFilter);
-
-	  List<Brand> brands = brandRepository.findAll(brandSpecification);
-		return Optional.of(brands).orElseThrow(() -> new NotFoundException("No Brands found."));
-  }
 }
