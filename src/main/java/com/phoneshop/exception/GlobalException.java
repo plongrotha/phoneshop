@@ -1,5 +1,6 @@
 package com.phoneshop.exception;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 @ControllerAdvice
 public class GlobalException {
@@ -31,5 +33,28 @@ public class GlobalException {
     detail.setProperty("errors", err);
     return detail;
   }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ProblemDetail handleMethodValidationException(HandlerMethodValidationException e) {
+        Map<String, String> errors = new HashMap<>();
+
+        // Loop through each invalid parameter validation result
+        e.getParameterValidationResults().forEach(parameterError -> {
+            String paramName = parameterError.getMethodParameter().getParameterName(); // Get parameter name
+
+            // Loop through each validation error message for this parameter
+            for (var messageError : parameterError.getResolvableErrors()) {
+                errors.put(paramName, messageError.getDefaultMessage()); // Store error message
+            }
+        });
+
+        // Create structured ProblemDetail response
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle("Method Parameter Validation Failed");
+        problemDetail.setProperties(Map.of("timestamp", LocalDateTime.now(), "errors", errors // Attach validation errors
+        ));
+
+        return problemDetail;
+    }
 
 }
