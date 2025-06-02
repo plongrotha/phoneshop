@@ -16,11 +16,7 @@ public interface BrandService {
 
     List<Brand> getAllBrands();
 
-    List<Brand> getAllBrandByName(String name);
-
-    List<Brand> getAllBrandSpecification(Map<String, String> params);
-
-
+//    List<Brand> getAllBrands(String name);
 
 
 }

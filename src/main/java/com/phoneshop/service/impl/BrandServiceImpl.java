@@ -1,17 +1,17 @@
 package com.phoneshop.service.impl;
 
+import com.phoneshop.exception.BrandAlreadyExistsException;
 import com.phoneshop.exception.NotFoundException;
 import com.phoneshop.model.entity.Brand;
 import com.phoneshop.repository.BrandRepository;
 import com.phoneshop.service.BrandService;
-import com.phoneshop.specification.BrandFilter;
-import com.phoneshop.specification.BrandSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -31,8 +31,13 @@ public class BrandServiceImpl implements BrandService {
     // i deleted return type Brand
     @Override
     public void createBrand(Brand brand) {
-        log.info("Create Brand "+ brand.getBrandName());
-        brandRepository.save(brand);
+        Optional<Brand> existBrand = brandRepository.findBrandByBrandName(brand.getBrandName());
+
+        if (existBrand.isPresent()) {
+            throw new BrandAlreadyExistsException("Brand '" + brand.getBrandName() + "' already exists");
+        }
+            brandRepository.save(brand);
+
     }
 
 
@@ -61,33 +66,12 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public void deleteBrandById(Long id) {
         Brand brand = getBrandById(id);
-        log.info("deleting brand with id : -> {}", brand.getBrandName() + " deleted.");
+        log.info("deleting brand with id : -> {}", id);
         brandRepository.delete(brand);
     }
 
-    @Override
-    public List<Brand> getAllBrandByName(String name) {
-        return brandRepository.findByBrandNameContaining(name);
-    }
-
-    @Override
-    public List<Brand> getAllBrandSpecification(Map<String, String> params) {
-
-        BrandFilter brandFilter = new BrandFilter();
-        // it's not good when add value fix like that need to modify
-        if (params.containsKey("name")){
-            String name = params.get("name");
-            brandFilter.setName(name);
-        }
-
-        if (params.containsKey("id")){
-            String id = params.get("id");
-            brandFilter.setId(Integer.parseInt("id"));
-        }
-
-        BrandSpecification specification = new BrandSpecification(brandFilter);
-        return brandRepository.findAll(specification);
-    }
-
-
+//	@Override
+//	public List<Brand> getAllBrands(String name) {
+//        return brandRepository.findByBrandNameContaining(name);
+//	}
 }
