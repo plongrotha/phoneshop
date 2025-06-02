@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @OpenAPIDefinition(
         info = @Info(
-                title = "PhoneShop API",
+                title = "PhoneShop Project API",
                 version = "1.0",
                 description = "API with Spring Boot"
         )

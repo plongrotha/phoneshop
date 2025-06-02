@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -62,8 +63,13 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	@Override
-	public List<Brand> getAllBrands(String name) {
+	public List<Brand> getAllBrandByName(String name) {
         return brandRepository.findByBrandNameContaining(name);
+	}
+
+	@Override
+	public List<Brand> getAllBrandSpecification(Map<String, String> params) {
+		return List.of();
 	}
 
 

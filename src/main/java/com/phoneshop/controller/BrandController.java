@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -41,7 +42,10 @@ public class BrandController {
    @Operation(summary = "Get all brands ", description = "Get all brands that have in database")
    @GetMapping
    public ResponseEntity<?> getAllBrands(){
-     List<BrandDTO> brands = brandService.getAllBrands().stream().map(BrandMapper.INSTANCE::toBrandDTO).collect(Collectors.toList());
+     List<BrandDTO> brands = brandService.getAllBrands()
+			 .stream()
+			 .map(BrandMapper.INSTANCE::toBrandDTO)
+			 .collect(Collectors.toList());
      return ResponseEntity.ok(
 			 ApiResponse.<List<BrandDTO>>builder()
 					 .success(true).message("All brands retrieved successfully")
@@ -51,6 +55,16 @@ public class BrandController {
 	 );
    }
 
+   @GetMapping("specification/")
+   public ResponseEntity<?> getAllBrandsSpecification(@RequestParam Map<String,String> params){
+
+
+
+
+		return  null;
+   }
+
+	// we can use this but not flexible we can move to specification
 	@Operation(summary = "Get brand by id", description = "Get brand by id")
 	@GetMapping("{brand-id}")
 	public ResponseEntity<?> getBrandById(@PathVariable("brand-id") Long id) {
@@ -63,6 +77,21 @@ public class BrandController {
 						.payload(brand)
 						.timestamp(LocalTime.now())
 						.build()
+		);
+	}
+
+	// we can use this but not flexible we can move to specification
+	@GetMapping("/by-name")
+	public ResponseEntity<?> getAllBrandByName(@RequestParam String name){
+		List<BrandDTO> list = brandService.getAllBrandByName(name).stream()
+				.map(BrandMapper.INSTANCE::toBrandDTO).collect(Collectors.toUnmodifiableList());
+
+		return ResponseEntity.ok(
+				ApiResponse.<List<BrandDTO>>builder()
+						.success(true).message("All brands retrieved successfully")
+						.status(HttpStatus.OK)
+						.payload(list)
+						.timestamp(LocalTime.now()).build()
 		);
 	}
 
