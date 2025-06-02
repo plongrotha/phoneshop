@@ -10,7 +10,7 @@ import com.phoneshop.model.entity.Brand;
 @Mapper(componentModel = "spring")
 public interface BrandMapper {
 
-	// transform from Brand -> BrandDT
+	// transform from Brand -> BrandDTO
 	BrandMapper INSTANCE = Mappers.getMapper(BrandMapper.class);
 
 	@Mapping(source = "vs", target = "version")

@@ -57,4 +57,12 @@ public class GlobalException {
         return problemDetail;
     }
 
+    @ExceptionHandler(BrandAlreadyExistsException.class)
+    public ProblemDetail handleBrandAlreadyExists(BrandAlreadyExistsException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problemDetail.setTitle("Brand Conflict");
+        problemDetail.setDetail(ex.getMessage());
+        return problemDetail;
+    }
+
 }

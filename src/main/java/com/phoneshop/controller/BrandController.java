@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.phoneshop.exception.NotFoundException;
 import com.phoneshop.mapper.BrandMapperImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,7 +41,7 @@ public class BrandController {
 
 	@Operation(summary = "Create brand", description = "Create a brand to database")
 	@PostMapping
-	public ResponseEntity<?> createBrand(@RequestBody BrandDTO brandDTO) {
+	public ResponseEntity<?> createBrand(@RequestBody @Valid BrandDTO brandDTO) {
 		Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
 		brandService.createBrand(brand);
 		return ResponseEntity.status(HttpStatus.CREATED)
@@ -67,7 +68,7 @@ public class BrandController {
 
 	@Operation(summary = "Get brand by id", description = "Get brand by id")
 	@GetMapping("{brand-id}")
-	public ResponseEntity<?> getBrandById(@PathVariable("brand-id") Long id) {
+	public ResponseEntity<?> getBrandById(@PathVariable("brand-id") @Positive Long id) {
 		Brand brand = brandService.getBrandById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(
 				ApiResponse.builder()
@@ -90,7 +91,7 @@ public class BrandController {
 
 	@Operation(summary = "Update brand by id", description = "Update brand by id")
 	@PutMapping("{brand-id}")
-	public ResponseEntity<?> updateBrandById(@PathVariable("brand-id") Long id, @RequestBody BrandDTO brandDTO) {
+	public ResponseEntity<?> updateBrandById(@PathVariable("brand-id") @Positive Long id, @RequestBody @Valid BrandDTO brandDTO) {
 		Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
 		brand.setBrandName(brandDTO.getBrandName());
 		brand.setVersion(brandDTO.getVs());

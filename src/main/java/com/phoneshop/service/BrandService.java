@@ -16,7 +16,7 @@ public interface BrandService {
 
     List<Brand> getAllBrands();
 
-    List<Brand> getAllBrands(String name);
+//    List<Brand> getAllBrands(String name);
 
 
 }
