@@ -39,29 +39,37 @@ public class BrandController {
 				.timestamp(LocalTime.now()).build());
 	}
 
-   @Operation(summary = "Get all brands ", description = "Get all brands that have in database")
-   @GetMapping
-   public ResponseEntity<?> getAllBrands(){
-     List<BrandDTO> brands = brandService.getAllBrands()
-			 .stream()
-			 .map(BrandMapper.INSTANCE::toBrandDTO)
-			 .collect(Collectors.toList());
-     return ResponseEntity.ok(
-			 ApiResponse.<List<BrandDTO>>builder()
-					 .success(true).message("All brands retrieved successfully")
-					 .status(HttpStatus.OK)
-					 .payload(brands)
-					 .timestamp(LocalTime.now()).build()
-	 );
-   }
+//   @Operation(summary = "Get all brands ", description = "Get all brands that have in database")
+//   @GetMapping
+//   public ResponseEntity<?> getAllBrands(){
+//     List<BrandDTO> brands = brandService.getAllBrands()
+//			 .stream()
+//			 .map(BrandMapper.INSTANCE::toBrandDTO)
+//			 .collect(Collectors.toList());
+//     return ResponseEntity.ok(
+//			 ApiResponse.<List<BrandDTO>>builder()
+//					 .success(true).message("All brands retrieved successfully")
+//					 .status(HttpStatus.OK)
+//					 .payload(brands)
+//					 .timestamp(LocalTime.now()).build()
+//	 );
+//   }
 
-   @GetMapping("specification/")
+   @GetMapping
    public ResponseEntity<?> getAllBrandsSpecification(@RequestParam Map<String,String> params){
 
+		List<BrandDTO> list = brandService.getAllBrandSpecification(params).stream()
+				.map(brand -> BrandMapper.INSTANCE.toBrandDTO(brand)).collect(Collectors.toList());
 
-
-
-		return  null;
+		return  ResponseEntity.ok().body(
+		    ApiResponse.builder()
+					.success(true)
+					.status(HttpStatus.OK)
+					.message("All brands retrieved successfully user specification.")
+					.payload(list)
+					.timestamp(LocalTime.now())
+					.build()
+		);
    }
 
 	// we can use this but not flexible we can move to specification
