@@ -61,10 +61,4 @@ public class BrandServiceImpl implements BrandService {
 		brandRepository.delete(brand);
 	}
 
-	@Override
-	public List<Brand> getAllBrands(String name) {
-        return brandRepository.findByBrandNameContaining(name);
-	}
-
-
 }

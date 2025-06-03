@@ -15,8 +15,4 @@ public interface BrandService {
     Brand updateBrandById(Long id, Brand brand);
 
     List<Brand> getAllBrands();
-
-    List<Brand> getAllBrands(String name);
-
-
 }
