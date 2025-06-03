@@ -1,4 +1,4 @@
-package com.phoneshop.org.model.entity;
+package com.phoneshop.model.entity;
 
 
 import jakarta.persistence.Column;
@@ -23,7 +23,7 @@ public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "model_id")
-    private Long modelId;
+    private Integer modelId;
     
     @Column(name = "model_name")
     private String modelName;

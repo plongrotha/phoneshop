@@ -1,0 +1,17 @@
+
+  +  mapstruct use to tranform from entity to DTO and from DTO to entity 
+
+  - ( DTO <-> Entity) tranfer to each other
+
+
+
+ - to make it generate mapper: 
+    use this : 
+    
+     <path>  
+       <groupId>org.mapstruct</groupId>
+       <artifactId>mapstruct-processor</artifactId>
+       <version>1.5.5.Final</version>
+     </path>
+     
+     and then run command mvn clean compile
