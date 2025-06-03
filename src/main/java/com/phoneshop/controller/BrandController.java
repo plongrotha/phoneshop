@@ -39,27 +39,29 @@ public class BrandController {
 				.timestamp(LocalTime.now()).build());
 	}
 
-//   @Operation(summary = "Get all brands ", description = "Get all brands that have in database")
-//   @GetMapping
-//   public ResponseEntity<?> getAllBrands(){
-//     List<BrandDTO> brands = brandService.getAllBrands()
-//			 .stream()
-//			 .map(BrandMapper.INSTANCE::toBrandDTO)
-//			 .collect(Collectors.toList());
-//     return ResponseEntity.ok(
-//			 ApiResponse.<List<BrandDTO>>builder()
-//					 .success(true).message("All brands retrieved successfully")
-//					 .status(HttpStatus.OK)
-//					 .payload(brands)
-//					 .timestamp(LocalTime.now()).build()
-//	 );
-//   }
-
+   @Operation(summary = "Get all brands ", description = "Get all brands that have in database")
    @GetMapping
+   public ResponseEntity<?> getAllBrands(){
+     List<BrandDTO> brands = brandService.getAllBrands()
+			 .stream()
+			 .map(BrandMapper.INSTANCE::toBrandDTO)
+			 .collect(Collectors.toList());
+     return ResponseEntity.ok(
+			 ApiResponse.<List<BrandDTO>>builder()
+					 .success(true).message("All brands retrieved successfully")
+					 .status(HttpStatus.OK)
+					 .payload(brands)
+					 .timestamp(LocalTime.now()).build()
+	 );
+   }
+
+	@Operation(summary = "Get brand use specification")
+   @GetMapping("/specification")
    public ResponseEntity<?> getAllBrandsSpecification(@RequestParam Map<String,String> params){
 
 		List<BrandDTO> list = brandService.getAllBrandSpecification(params).stream()
-				.map(brand -> BrandMapper.INSTANCE.toBrandDTO(brand)).collect(Collectors.toList());
+				.map(brand -> BrandMapper.INSTANCE.toBrandDTO(brand))
+				.collect(Collectors.toList());
 
 		return  ResponseEntity.ok().body(
 		    ApiResponse.builder()
@@ -107,8 +109,15 @@ public class BrandController {
 	@DeleteMapping("{brand-id}")
 	public ResponseEntity<?> deleteBrandById(@PathVariable("brand-id") @Positive Long id) {
 		brandService.deleteBrandById(id);
-		return ResponseEntity.ok(ApiResponse.builder().success(true).message("Brand deleted successfully")
-				.status(HttpStatus.OK).timestamp(LocalTime.now()).build());
+		return ResponseEntity.ok(
+				ApiResponse.builder()
+						.success(true)
+				.success(true)
+				.message("Brand deleted successfully")
+						.status(HttpStatus.OK)
+						.payload("deleted")
+				.timestamp(LocalTime.now())
+				.build());
 	}
 
 	@Operation(summary = "Update brand by id", description = "Update brand by id")

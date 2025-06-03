@@ -31,6 +31,7 @@ public class BrandServiceImpl implements BrandService {
     // i deleted return type Brand
     @Override
     public void createBrand(Brand brand) {
+        log.info("Create Brand "+ brand.getBrandName());
         brandRepository.save(brand);
     }
 
@@ -60,7 +61,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public void deleteBrandById(Long id) {
         Brand brand = getBrandById(id);
-        log.info("deleting brand with id : -> {}", id);
+        log.info("deleting brand with id : -> {}", brand.getBrandName() + " deleted.");
         brandRepository.delete(brand);
     }
 
