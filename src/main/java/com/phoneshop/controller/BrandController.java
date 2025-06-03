@@ -90,7 +90,7 @@ public class BrandController {
 
 
 	@GetMapping
-	public ResponseEntity<?> getAllBrandSpecification(@RequestParam Map<String, String> params){
+	public ResponseEntity<?> getAllBrandSpecification(@RequestParam @Valid Map<String, String> params){
 
 		List<BrandDTO> list = brandService.getAllBrandSpecification(params)
 				.stream().map(brand -> BrandMapper.INSTANCE.toBrandDTO(brand))
