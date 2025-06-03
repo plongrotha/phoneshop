@@ -16,24 +16,34 @@ public class BrandSpecification implements Specification<Brand> {
 
     private final BrandFilter brandFilter;
 
-    List<Predicate> predicates = new ArrayList<>();
-
     @Override
-    public Predicate toPredicate(Root<Brand> brand, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+    public Predicate toPredicate(Root<Brand> brand, CriteriaQuery<?> query, CriteriaBuilder cb) {
 
-        if(brandFilter.getName() != null){
-            Predicate name = brand.get("name").in(brandFilter.getName());
-            predicates.add(name);
+        List<Predicate> predicates = new ArrayList<>();
+
+//        if(brandFilter.getBrandName() != null){
+//            Predicate name = brand.get("name").in(brandFilter.getBrandName());
+//            predicates.add(name);
+//        }
+//
+//        if(brandFilter.getBrandId() != null){
+//            Predicate id = brand.get("id").in(brandFilter.getBrandId());
+//            predicates.add(id);
+//        }
+
+
+        if (brandFilter.getBrandName() != null) {
+            predicates.add(cb.like(cb.lower(brand.get("brandName")), "%" + brandFilter.getBrandName().toLowerCase() + "%"));
         }
 
-        if(brandFilter.getId() != null){
-            Predicate id = brand.get("id").in(brandFilter.getId());
-            predicates.add(id);
+        if (brandFilter.getBrandId() != null) {
+            predicates.add(cb.equal(brand.get("brandId"), brandFilter.getBrandId()));
         }
+
 
         // convert Predication to array
         Predicate[] predicateArray = predicates.toArray(Predicate[]::new);
 
-        return criteriaBuilder.and(predicateArray);
+        return cb.and(predicateArray);
     }
 }

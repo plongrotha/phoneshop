@@ -57,13 +57,14 @@ public class BrandServiceImpl implements BrandService {
 
         if (params.containsKey("name")){
             String name = params.get("name");
-            brandFilter.setName(name);
+            brandFilter.setBrandName(name);
         }
 
         if (params.containsKey("id")){
             String id = params.get("id");
-            brandFilter.setId(Integer.parseInt(id));
+            brandFilter.setBrandId(Integer.parseInt(id));
         }
+
         BrandSpecification brandSpecification = new BrandSpecification(brandFilter);
         return brandRepository.findAll(brandSpecification);
     }
