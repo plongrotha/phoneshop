@@ -100,4 +100,22 @@ public class BrandController {
 		return ResponseEntity.ok(ApiResponse.builder().success(true).status(HttpStatus.OK)
 				.message("updated successfully").payload(brandService.updateBrandById(id, brand)).timestamp(LocalTime.now()).build());
 	}
+
+
+	@GetMapping("/specification")
+	public ResponseEntity<?> getAllBrandSpecification(@RequestParam Map<String, String> params){
+
+		List<BrandDTO> list = brandService.getAllBrandSpecification(params)
+				.stream().map(brand -> BrandMapper.INSTANCE.toBrandDTO(brand))
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok().body(
+				ApiResponse.builder()
+				.success(true)
+				.message("All brands retrieved successfully")
+				.status(HttpStatus.OK)
+				.payload(list)
+				.timestamp(LocalTime.now()).build()
+		);
+	}
 }

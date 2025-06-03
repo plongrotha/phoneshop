@@ -5,6 +5,8 @@ import com.phoneshop.exception.NotFoundException;
 import com.phoneshop.model.entity.Brand;
 import com.phoneshop.repository.BrandRepository;
 import com.phoneshop.service.BrandService;
+import com.phoneshop.specification.BrandFilter;
+import com.phoneshop.specification.BrandSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -46,6 +49,23 @@ public class BrandServiceImpl implements BrandService {
         List<Brand> brands = brandRepository.findAll();
         log.info("get all brands : {}", brands.size());
         return Optional.of(brands).filter(list -> !list.isEmpty()).orElseThrow(() -> new NotFoundException("No Brands found."));
+    }
+
+    @Override
+    public List<Brand> getAllBrandSpecification(Map<String, String> params) {
+        BrandFilter brandFilter = new BrandFilter();
+
+        if (params.containsKey("name")){
+            String name = params.get("name");
+            brandFilter.setName(name);
+        }
+
+        if (params.containsKey("id")){
+            String id = params.get("id");
+            brandFilter.setId(Integer.parseInt(id));
+        }
+        BrandSpecification brandSpecification = new BrandSpecification(brandFilter);
+        return brandRepository.findAll(brandSpecification);
     }
 
     @Override
