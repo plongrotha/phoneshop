@@ -69,9 +69,4 @@ public class BrandServiceImpl implements BrandService {
         log.info("deleting brand with id : -> {}", id);
         brandRepository.delete(brand);
     }
-
-//	@Override
-//	public List<Brand> getAllBrands(String name) {
-//        return brandRepository.findByBrandNameContaining(name);
-//	}
 }
