@@ -37,7 +37,6 @@ public class BrandController {
 
 	// inject used constructor
 	private final BrandService brandService;
-	private final BrandMapperImpl brandMapperImpl;
 
 	@Operation(summary = "Create brand", description = "Create a brand to database")
 	@PostMapping
@@ -69,8 +68,8 @@ public class BrandController {
 	}
 
 	@Operation(summary = "Delete brand by id", description = "Delete brand by id")
-	@DeleteMapping("{brand-id}")
-	public ResponseEntity<?> deleteBrandById(@PathVariable("brand-id") @Positive Long id) {
+	@DeleteMapping("{id}")
+	public ResponseEntity<?> deleteBrandById(@PathVariable("id") @Positive Long id) {
 		brandService.deleteBrandById(id);
 		return ResponseEntity.ok(ApiResponse.builder().success(true).message("Brand deleted successfully")
 				.status(HttpStatus.OK).timestamp(LocalTime.now()).build());
@@ -81,7 +80,7 @@ public class BrandController {
 	public ResponseEntity<?> updateBrandById(@PathVariable("brand-id") @Positive Long id, @RequestBody @Valid BrandDTO brandDTO) {
 		Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
 		brand.setBrandName(brandDTO.getBrandName());
-		brand.setVersion(brandDTO.getVs());
+		brand.setVersion(brandDTO.getVersion());
 		// brand.setBrandId(id);
 //		brand = brandService.updateBrandById(id, brand);
 		return ResponseEntity.ok(ApiResponse.builder().success(true).status(HttpStatus.OK)

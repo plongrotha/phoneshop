@@ -13,9 +13,9 @@ public interface BrandMapper {
 	// transform from Brand -> BrandDTO
 	BrandMapper INSTANCE = Mappers.getMapper(BrandMapper.class);
 
-	@Mapping(source = "vs", target = "version")
+	@Mapping(source = "version", target = "version")
 	Brand toBrand(BrandDTO brandDTO);
 
-	@Mapping(source = "version", target = "vs")
+	@Mapping(source = "version", target = "version")
 	BrandDTO toBrandDTO(Brand brand);
 }

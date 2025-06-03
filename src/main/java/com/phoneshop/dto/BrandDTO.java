@@ -20,6 +20,6 @@ public class BrandDTO {
 
     @Min(value = 1)
     @NotNull(message = "Version cannot be null")
-    private Integer vs;
+    private Integer version;
 
 }
