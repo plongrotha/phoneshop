@@ -53,19 +53,6 @@ public class BrandController {
 				.timestamp(LocalTime.now()).build());
 	}
 
-   @Operation(summary = "Get all brands ", description = "Get all brands that have in database")
-   @GetMapping
-   public ResponseEntity<?> getAllBrands(){
-     List<BrandDTO> brands = brandService.getAllBrands().stream().map(BrandMapper.INSTANCE::toBrandDTO).collect(Collectors.toList());
-     return ResponseEntity.ok(
-			 ApiResponse.<List<BrandDTO>>builder()
-					 .success(true).message("All brands retrieved successfully")
-					 .status(HttpStatus.OK)
-					 .payload(brands)
-					 .timestamp(LocalTime.now()).build()
-	 );
-   }
-
 	@Operation(summary = "Get brand by id", description = "Get brand by id")
 	@GetMapping("{brand-id}")
 	public ResponseEntity<?> getBrandById(@PathVariable("brand-id") @Positive Long id) {
@@ -102,8 +89,8 @@ public class BrandController {
 	}
 
 
-	@GetMapping("/specification")
-	public ResponseEntity<?> getAllBrandSpecification(@RequestParam Map<String, String> params){
+	@GetMapping
+	public ResponseEntity<?> getAllBrandSpecification(@RequestParam @Valid Map<String, String> params){
 
 		List<BrandDTO> list = brandService.getAllBrandSpecification(params)
 				.stream().map(brand -> BrandMapper.INSTANCE.toBrandDTO(brand))
