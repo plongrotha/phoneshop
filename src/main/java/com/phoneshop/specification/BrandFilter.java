@@ -6,4 +6,5 @@ import lombok.Data;
 public class BrandFilter {
     private Integer brandId;
     private String brandName;
+    private String version;
 }

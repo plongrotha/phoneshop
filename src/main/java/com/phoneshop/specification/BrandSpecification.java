@@ -1,5 +1,6 @@
 package com.phoneshop.specification;
 
+import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.phoneshop.model.entity.Brand;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -33,7 +34,7 @@ public class BrandSpecification implements Specification<Brand> {
 
 
         if (brandFilter.getBrandName() != null) {
-            predicates.add(cb.like(cb.lower(brand.get("brandName")), "%" + brandFilter.getBrandName().toLowerCase() + "%"));
+            predicates.add(cb.like(cb.upper(brand.get("brandName")), "%" + brandFilter.getBrandName().toUpperCase() + "%"));
         }
 
         if (brandFilter.getBrandId() != null) {
@@ -47,3 +48,5 @@ public class BrandSpecification implements Specification<Brand> {
         return cb.and(predicateArray);
     }
 }
+
+
