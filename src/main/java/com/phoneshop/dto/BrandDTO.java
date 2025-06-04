@@ -13,7 +13,7 @@ public class BrandDTO {
     // at this we convert Brand to BrandDTO what we give user can input.
     // so we not need user input id and the id is increase auto in database
 
-    @NotNull(message = "Brand ID cannot be null")
+    @NotNull(message = "Brand Name cannot be null")
     @Size(min = 1, message = "Brand ID must be at least 1 character long")
     private String brandName;
 
