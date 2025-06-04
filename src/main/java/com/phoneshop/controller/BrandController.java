@@ -47,10 +47,10 @@ public class BrandController {
 		brandService.createBrand(brand);
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(ApiResponse.builder()
-        .success(true)
-        .message("Brand created successfully")
+                .success(true)
+                .message("Brand created successfully")
 				.status(HttpStatus.CREATED)
-        .payload(BrandMapper.INSTANCE.toBrandDTO(brand))
+                .payload(brand)
 				.timestamp(LocalTime.now()).build());
 	}
 
