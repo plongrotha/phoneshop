@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.phoneshop.dto.PageDTO;
 import com.phoneshop.exception.NotFoundException;
 import com.phoneshop.mapper.BrandMapperImpl;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -91,16 +93,19 @@ public class BrandController {
 	@GetMapping
 	public ResponseEntity<?> getAllBrandSpecification(@RequestParam @Valid Map<String, String> params){
 
-		List<BrandDTO> list = brandService.getAllBrandSpecification(params)
-				.stream().map(brand -> BrandMapper.INSTANCE.toBrandDTO(brand))
-				.collect(Collectors.toList());
+//		List<BrandDTO> list = brandService.getAllBrandSpecification(params)
+//				.stream().map(brand -> BrandMapper.INSTANCE.toBrandDTO(brand))
+//				.collect(Collectors.toList());
+
+		Page<Brand> page = brandService.getAllBrandSpecification(params);
+		PageDTO pageDTO = new PageDTO(page);
 
 		return ResponseEntity.ok().body(
 				ApiResponse.builder()
 				.success(true)
 				.message("All brands retrieved successfully")
 				.status(HttpStatus.OK)
-				.payload(list)
+				.payload(pageDTO)
 				.timestamp(LocalTime.now()).build()
 		);
 	}

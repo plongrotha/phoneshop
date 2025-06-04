@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.phoneshop.model.entity.Brand;
+import org.springframework.data.domain.Page;
 
 public interface BrandService {
     void createBrand(Brand brand);
@@ -16,6 +17,6 @@ public interface BrandService {
 
     List<Brand> getAllBrands();
 
-    List<Brand> getAllBrandSpecification(Map<String,String> params);
+    Page<Brand> getAllBrandSpecification(Map<String,String> params);
 
 }

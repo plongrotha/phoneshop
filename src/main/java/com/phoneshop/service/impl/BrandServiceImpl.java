@@ -7,8 +7,12 @@ import com.phoneshop.repository.BrandRepository;
 import com.phoneshop.service.BrandService;
 import com.phoneshop.specification.BrandFilter;
 import com.phoneshop.specification.BrandSpecification;
+import com.phoneshop.utils.KeySpecificationUtil;
+import com.phoneshop.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,22 +52,41 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> getAllBrandSpecification(Map<String, String> params) {
+    public Page<Brand> getAllBrandSpecification(Map<String, String> params) {
         BrandFilter brandFilter = new BrandFilter();
 
-        if (params.containsKey("name")){
-            String name = params.get("name");
+        if (params.containsKey(KeySpecificationUtil.KEY_NAME)){
+            String name = params.get(KeySpecificationUtil.KEY_NAME);
             brandFilter.setBrandName(name);
         }
 
-        if (params.containsKey("id")){
-            String id = params.get("id");
+        if (params.containsKey(KeySpecificationUtil.KEY_ID)){
+            String id = params.get(KeySpecificationUtil.KEY_ID);
             brandFilter.setBrandId(Integer.parseInt(id));
         }
 
         BrandSpecification brandSpecification = new BrandSpecification(brandFilter);
-        return brandRepository.findAll(brandSpecification);
+
+        // need to improve to do
+        int pageNumber = PageUtil.DEFAULT_PAGE_NUMBER;
+        if (params.containsKey(PageUtil.PAGE_NUMBER_PARAM)) {
+            pageNumber = Integer.parseInt(params.get(PageUtil.PAGE_NUMBER_PARAM));
+        }
+
+        int pageSize = PageUtil.DEFAULT_PAGE_SIZE;
+        if (params.containsKey(PageUtil.PAGE_SIZE_PARAM)) {
+            pageSize = Integer.parseInt(params.get(PageUtil.PAGE_SIZE_PARAM));
+        }
+
+
+        Pageable pageable = PageUtil.getPageable(pageNumber, pageSize);
+
+        Page<Brand> brands = brandRepository.findAll(brandSpecification, pageable);
+
+        return  brands;
     }
+
+    // pagination
 
     @Override
     public Brand getBrandById(Long id) {
