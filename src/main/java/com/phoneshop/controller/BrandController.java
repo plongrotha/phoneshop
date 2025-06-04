@@ -78,7 +78,7 @@ public class BrandController {
 	public ResponseEntity<?> updateBrandById(@PathVariable("brand-id") @Positive Long id, @RequestBody @Valid BrandDTO brandDTO) {
 		Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
 		brand.setBrandName(brandDTO.getBrandName());
-		brand.setVs(brandDTO.getVersion());
+//		brand.setVersion(brandDTO.getVersion());
 		// brand.setBrandId(id);
 //		brand = brandService.updateBrandById(id, brand);
 		return ResponseEntity.ok(ApiResponse.builder().success(true).status(HttpStatus.OK)

@@ -27,6 +27,9 @@ public class Model {
     
     @Column(name = "model_name")
     private String modelName;
+    
+    @Column(name = "version")
+    private Double version;
 
     @ManyToOne
     @JoinColumn(name = "brandId")

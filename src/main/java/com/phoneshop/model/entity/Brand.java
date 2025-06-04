@@ -24,8 +24,4 @@ public class Brand {
     @Column(name = "brand_name", nullable = false)
     private String brandName;
     
-    @Column(name = "version")
-    private Integer vs;
-    
-
 }

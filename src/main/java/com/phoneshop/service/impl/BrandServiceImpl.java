@@ -99,7 +99,7 @@ public class BrandServiceImpl implements BrandService {
     public Brand updateBrandById(Long id, Brand brand) {
         Brand existingBrand = getBrandById(id);
         existingBrand.setBrandName(brand.getBrandName());
-        existingBrand.setVersion(brand.getVersion());
+//        existingBrand.setVersion(brand.getVersion());
         return brandRepository.save(existingBrand);
     }
 

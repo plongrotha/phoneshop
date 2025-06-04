@@ -18,8 +18,8 @@ public class BrandDTO {
     private String brandName;
 
 
-    @Min(value = 1)
-    @NotNull(message = "Version cannot be null")
-    private Integer version;
+//    @Min(value = 1)
+//    @NotNull(message = "Version cannot be null")
+//    private Integer version;
 
 }
