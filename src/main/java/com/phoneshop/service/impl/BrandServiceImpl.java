@@ -26,10 +26,6 @@ import java.util.Optional;
 public class BrandServiceImpl implements BrandService {
 
     private final BrandRepository brandRepository;
-//
-//	private final Function<Long, Brand> findBrandById = (id) -> brandRepository.findById(id).orElseThrow((() -> new NotFoundException("Brand with id " + id + " not found")));
-//	private final Consumer<Brand> insertBrand = brandRepository::save;
-
 
     // i deleted return type Brand
     @Override
