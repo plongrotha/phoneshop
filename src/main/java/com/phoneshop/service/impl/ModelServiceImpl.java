@@ -1,10 +1,12 @@
 package com.phoneshop.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.phoneshop.dto.ModelDTO;
 import com.phoneshop.exception.NotFoundException;
-import com.phoneshop.model.entity.Brand;
+import com.phoneshop.mapper.ModelMapper;
 import com.phoneshop.model.entity.Model;
 import com.phoneshop.model.response.ModelResponse;
 import com.phoneshop.repository.BrandRepository;
@@ -20,46 +22,38 @@ import lombok.extern.slf4j.Slf4j;
 public class ModelServiceImpl implements ModelService {
 
 	private final ModelRepository modelRepository;
-	private final BrandRepository brandRepository;
+	private final ModelMapper mapper;
 
 	@Override
-	public ModelResponse save(ModelDTO dto) {
-		
-		Model model = new Model();
-		
-		Brand brand = brandRepository.findById(Long.valueOf(dto.getBrandId()))
-				.orElseThrow(() -> new NotFoundException("Brand id "+ dto.getBrandId() +" not found."));
-		
-		model.setBrand(brand);
-		model.setModelName(dto.getModelName());
-		model.setVersion(dto.getVersion());
-		
-		log.info("create model {} : " + model);
-		model = modelRepository.save(model);
-		
-		ModelResponse response = new ModelResponse();
-		response.setModelId(model.getModelId());
-		response.setBrandId(model.getBrand().getBrandId());
-		response.setName(model.getModelName());
-		response.setVersion(model.getVersion());
-		
-		return response;
+	public Model save(Model model) {
+		log.info("created model {} : " + model);
+		return modelRepository.save(model);
 	}
 
 	@Override
 	public ModelResponse getModelByModelId(Integer id) {
-		
-		Model model = modelRepository.findById(id).orElseThrow(() -> new NotFoundException("model id " + id + " not found."));
-		
+
+		Model model = modelRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("model id " + id + " not found."));
+
 		ModelResponse response = new ModelResponse();
 		response.setBrandId(model.getBrand().getBrandId());
 		response.setModelId(model.getModelId());
 		response.setName(model.getModelName());
 		response.setVersion(model.getVersion());
-		
+
+		log.info("updated model {} : " + response);
 		return response;
-		
+
 	}
 
+	@Override
+	public List<Model> getAllModels() {
+		List<Model> list = modelRepository.findAll();
+		if (list.isEmpty()) {
+			throw new NotFoundException("No model is found.");
+		}
+		return list;
+	}
 
 }
