@@ -4,12 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.phoneshop.dto.ModelDTO;
 import com.phoneshop.exception.NotFoundException;
 import com.phoneshop.mapper.ModelMapper;
 import com.phoneshop.model.entity.Model;
 import com.phoneshop.model.response.ModelResponse;
-import com.phoneshop.repository.BrandRepository;
 import com.phoneshop.repository.ModelRepository;
 import com.phoneshop.service.ModelService;
 
