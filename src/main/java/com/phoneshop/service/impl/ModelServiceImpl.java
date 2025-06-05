@@ -12,7 +12,6 @@ import com.phoneshop.repository.ModelRepository;
 import com.phoneshop.service.ModelService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,11 +27,11 @@ public class ModelServiceImpl implements ModelService {
 		
 		Model model = new Model();
 		
-		Brand brand = brandRepository.findById(dto.getBrandId())
+		Brand brand = brandRepository.findById(Long.valueOf(dto.getBrandId()))
 				.orElseThrow(() -> new NotFoundException("Brand id "+ dto.getBrandId() +" not found."));
 		
 		model.setBrand(brand);
-		model.setModelName(dto.getName());
+		model.setModelName(dto.getModelName());
 		model.setVersion(dto.getVersion());
 		
 		log.info("create model {} : " + model);
@@ -46,5 +45,21 @@ public class ModelServiceImpl implements ModelService {
 		
 		return response;
 	}
+
+	@Override
+	public ModelResponse getModelByModelId(Integer id) {
+		
+		Model model = modelRepository.findById(id).orElseThrow(() -> new NotFoundException("model id " + id + " not found."));
+		
+		ModelResponse response = new ModelResponse();
+		response.setBrandId(model.getBrand().getBrandId());
+		response.setModelId(model.getModelId());
+		response.setName(model.getModelName());
+		response.setVersion(model.getVersion());
+		
+		return response;
+		
+	}
+
 
 }

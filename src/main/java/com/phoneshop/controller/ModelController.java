@@ -4,9 +4,11 @@ import java.time.LocalTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.phoneshop.dto.ModelDTO;
@@ -31,11 +33,17 @@ public class ModelController {
 
 		ModelResponse response = modelService.save(dto);
 
-		return ResponseEntity.ok().body(
-				ApiResponse.builder().success(true).message("create model successfully").payload(response)
-						.status(HttpStatus.CREATED).timestamp(LocalTime.now())
-						.build()
-		);
+		return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("create model successfully")
+				.payload(response).status(HttpStatus.CREATED).timestamp(LocalTime.now()).build());
+	}
+
+	@GetMapping("{id}")
+	public ResponseEntity<?> getModelById(@RequestParam Integer id) {
+
+		ModelResponse response = modelService.getModelByModelId(id);
+
+		return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("retrieve model successfully")
+				.payload(response).status(HttpStatus.OK).timestamp(LocalTime.now()).build());
 	}
 
 }
