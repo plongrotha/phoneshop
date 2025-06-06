@@ -32,8 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/brands")
 @RequiredArgsConstructor
 public class BrandController {
-
-	// inject used constructor
+	
 	private final BrandService brandService;
 
 	@Operation(summary = "Create brand", description = "Create a brand to database")
@@ -42,67 +41,47 @@ public class BrandController {
 		Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
 		brandService.createBrand(brand);
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(ApiResponse.builder()
-                .success(true)
-                .message("Brand created successfully")
-				.status(HttpStatus.CREATED)
-                .payload(brand)
-				.timestamp(LocalTime.now()).build());
+				.body(ApiResponse.builder().success(true).message("Brand created successfully")
+						.status(HttpStatus.CREATED).payload(brand).timestamp(LocalTime.now()).build());
 	}
 
 	@Operation(summary = "Get brand by id", description = "Get brand by id")
 	@GetMapping("{brand-id}")
 	public ResponseEntity<?> getBrandById(@PathVariable("brand-id") @Positive Long id) {
 		Brand brand = brandService.getBrandById(id);
-		return ResponseEntity.status(HttpStatus.OK).body(
-				ApiResponse.builder()
-						.success(true)
-						.message("Brand retrieved successfully")
-						.status(HttpStatus.OK)
-						.payload(brand)
-						.timestamp(LocalTime.now())
-						.build()
-		);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(ApiResponse.builder().success(true).message("Brand retrieved successfully").status(HttpStatus.OK)
+						.payload(brand).timestamp(LocalTime.now()).build());
 	}
 
 	@Operation(summary = "Delete brand by id", description = "Delete brand by id")
-	@DeleteMapping("{id}")
-	public ResponseEntity<?> deleteBrandById(@PathVariable("id") @Positive Long id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteBrandById(@PathVariable @Positive Long id) {
 		brandService.deleteBrandById(id);
+		
 		return ResponseEntity.ok(ApiResponse.builder().success(true).message("Brand deleted successfully")
 				.status(HttpStatus.OK).timestamp(LocalTime.now()).build());
 	}
 
 	@Operation(summary = "Update brand by id", description = "Update brand by id")
 	@PutMapping("{brand-id}")
-	public ResponseEntity<?> updateBrandById(@PathVariable("brand-id") @Positive Long id, @RequestBody @Valid BrandDTO brandDTO) {
+	public ResponseEntity<?> updateBrandById(@PathVariable("brand-id") @Positive Long id,
+			@RequestBody @Valid BrandDTO brandDTO) {
 		Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
 		brand.setBrandName(brandDTO.getBrandName());
-//		brand.setVersion(brandDTO.getVersion());
-		// brand.setBrandId(id);
-//		brand = brandService.updateBrandById(id, brand);
-		return ResponseEntity.ok(ApiResponse.builder().success(true).status(HttpStatus.OK)
-				.message("updated successfully").payload(brandService.updateBrandById(id, brand)).timestamp(LocalTime.now()).build());
+		return ResponseEntity
+				.ok(ApiResponse.builder().success(true).status(HttpStatus.OK).message("updated successfully")
+						.payload(brandService.updateBrandById(id, brand)).timestamp(LocalTime.now()).build());
 	}
 
-
+	@Operation(summary = "Get brand specification")
 	@GetMapping
-	public ResponseEntity<?> getAllBrandSpecification(@RequestParam @Valid Map<String, String> params){
-
-//		List<BrandDTO> list = brandService.getAllBrandSpecification(params)
-//				.stream().map(brand -> BrandMapper.INSTANCE.toBrandDTO(brand))
-//				.collect(Collectors.toList());
+	public ResponseEntity<?> getAllBrandSpecification(@RequestParam @Valid Map<String, String> params) {
 
 		Page<Brand> page = brandService.getAllBrandSpecification(params);
 		PageDTO pageDTO = new PageDTO(page);
 
-		return ResponseEntity.ok().body(
-				ApiResponse.builder()
-				.success(true)
-				.message("All brands retrieved successfully")
-				.status(HttpStatus.OK)
-				.payload(pageDTO)
-				.timestamp(LocalTime.now()).build()
-		);
+		return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("All brands retrieved successfully")
+				.status(HttpStatus.OK).payload(pageDTO).timestamp(LocalTime.now()).build());
 	}
 }

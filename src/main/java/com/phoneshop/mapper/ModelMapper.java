@@ -21,5 +21,7 @@ public interface ModelMapper {
 	@Mapping(target = "brandId", source = "brand.brandId")
 	ModelDTO toModelDTO(Model model);
 	
+	List<ModelDTO> toListModelDTO(List<Model> list);
+	
 
 }

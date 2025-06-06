@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.phoneshop.dto.ModelDTO;
 import com.phoneshop.mapper.ModelMapper;
-import com.phoneshop.mapper.ModelMapperImpl;
 import com.phoneshop.model.entity.Model;
 import com.phoneshop.model.response.ApiResponse;
 import com.phoneshop.model.response.ModelResponse;
@@ -63,9 +62,11 @@ public class ModelController {
 		
 		List<Model> list = modelService.getAllModels();
 		
+		List<ModelDTO> dtoList = modelMapper.toListModelDTO(list);
+		
 		
 		return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("retrieve model successfully")
-				.payload(list).status(HttpStatus.OK).timestamp(LocalTime.now()).build());
+				.payload(dtoList).status(HttpStatus.OK).timestamp(LocalTime.now()).build());
 	}
 
 }
