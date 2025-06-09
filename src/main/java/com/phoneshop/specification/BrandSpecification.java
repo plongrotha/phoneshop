@@ -1,21 +1,26 @@
 package com.phoneshop.specification;
 
-import com.fasterxml.jackson.databind.node.DoubleNode;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.jpa.domain.Specification;
+
 import com.phoneshop.model.entity.Brand;
+
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class BrandSpecification implements Specification<Brand> {
 
-    private final BrandFilter brandFilter;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final BrandFilter brandFilter;
 
     @Override
     public Predicate toPredicate(Root<Brand> brand, CriteriaQuery<?> query, CriteriaBuilder cb) {

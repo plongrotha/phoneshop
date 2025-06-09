@@ -12,5 +12,4 @@ public class PhoneShopProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PhoneShopProjectApplication.class, args);
 	}
-
 }

@@ -58,7 +58,7 @@ public class BrandServiceImpl implements BrandService {
 
         if (params.containsKey(KeySpecificationUtil.KEY_ID)){
             String id = params.get(KeySpecificationUtil.KEY_ID);
-            brandFilter.setBrandId(Integer.parseInt(id));
+            brandFilter.setBrandId(Long.parseLong(id));
         }
 
         BrandSpecification brandSpecification = new BrandSpecification(brandFilter);

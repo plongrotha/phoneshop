@@ -4,12 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.phoneshop.dto.ModelDTO;
 import com.phoneshop.exception.NotFoundException;
 import com.phoneshop.mapper.ModelMapper;
 import com.phoneshop.model.entity.Model;
 import com.phoneshop.model.response.ModelResponse;
-import com.phoneshop.repository.BrandRepository;
 import com.phoneshop.repository.ModelRepository;
 import com.phoneshop.service.ModelService;
 
@@ -22,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ModelServiceImpl implements ModelService {
 
 	private final ModelRepository modelRepository;
-	private final ModelMapper mapper;
+	private final ModelMapper modelMapper;
 
 	@Override
 	public Model save(Model model) {
@@ -31,7 +29,7 @@ public class ModelServiceImpl implements ModelService {
 	}
 
 	@Override
-	public ModelResponse getModelByModelId(Integer id) {
+	public ModelResponse getModelByModelId(Long id) {
 
 		Model model = modelRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("model id " + id + " not found."));

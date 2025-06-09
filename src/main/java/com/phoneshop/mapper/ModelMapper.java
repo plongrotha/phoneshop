@@ -17,11 +17,12 @@ public interface ModelMapper {
 
 	@Mapping(target = "brand", source = "brandId")
 	Model toModel(ModelDTO dto);
-	
+
 	@Mapping(target = "brandId", source = "brand.brandId")
 	ModelDTO toModelDTO(Model model);
-	
+
 	List<ModelDTO> toListModelDTO(List<Model> list);
-	
+
+
 
 }

@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +32,9 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/brands")
 @RequiredArgsConstructor
+@CrossOrigin
 public class BrandController {
-	
+
 	private final BrandService brandService;
 
 	@Operation(summary = "Create brand", description = "Create a brand to database")
@@ -58,7 +60,7 @@ public class BrandController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteBrandById(@PathVariable @Positive Long id) {
 		brandService.deleteBrandById(id);
-		
+
 		return ResponseEntity.ok(ApiResponse.builder().success(true).message("Brand deleted successfully")
 				.status(HttpStatus.OK).timestamp(LocalTime.now()).build());
 	}
