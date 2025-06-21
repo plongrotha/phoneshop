@@ -15,14 +15,11 @@ public interface ModelMapper {
 
 	ModelMapper INSTANCE = Mappers.getMapper(ModelMapper.class);
 
-	@Mapping(target = "brand", source = "brandId")
+	@Mapping(target = "brand.brandId", source = "brandId")
 	Model toModel(ModelDTO dto);
 
 	@Mapping(target = "brandId", source = "brand.brandId")
 	ModelDTO toModelDTO(Model model);
 
 	List<ModelDTO> toListModelDTO(List<Model> list);
-
-
-
 }

@@ -19,39 +19,36 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ModelServiceImpl implements ModelService {
 
-	private final ModelRepository modelRepository;
-	private final ModelMapper modelMapper;
+    private final ModelRepository modelRepository;
+    private final ModelMapper modelMapper;
 
-	@Override
-	public Model save(Model model) {
-		log.info("created model {} : " + model);
-		return modelRepository.save(model);
-	}
+    @Override
+    public Model save(Model model) {
+        log.info("created model {} : " + model);
+        return modelRepository.save(model);
+    }
 
-	@Override
-	public ModelResponse getModelByModelId(Long id) {
+    @Override
+    public Model getModelById(Long id) {
 
-		Model model = modelRepository.findById(id)
-				.orElseThrow(() -> new NotFoundException("model id " + id + " not found."));
+        Model model = modelRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("model id " + id + " not found."));
 
-		ModelResponse response = new ModelResponse();
-		response.setBrandId(model.getBrand().getBrandId());
-		response.setModelId(model.getModelId());
-		response.setName(model.getModelName());
-		response.setVersion(model.getVersion());
+        return model;
+    }
 
-		log.info("updated model {} : " + response);
-		return response;
+    @Override
+    public List<Model> getAllModels() {
+        List<Model> list = modelRepository.findAll();
+        if (list.isEmpty()) {
+            throw new NotFoundException("No model is found.");
+        }
+        return list;
+    }
 
-	}
+    @Override
+    public void deleteModelByModelId(Long id) {
 
-	@Override
-	public List<Model> getAllModels() {
-		List<Model> list = modelRepository.findAll();
-		if (list.isEmpty()) {
-			throw new NotFoundException("No model is found.");
-		}
-		return list;
-	}
+    }
 
 }

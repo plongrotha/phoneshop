@@ -35,7 +35,7 @@ public class BrandServiceImpl implements BrandService {
         if (existBrand.isPresent()) {
             throw new BrandAlreadyExistsException("Brand '" + brand.getBrandName() + "' already exists");
         }
-            brandRepository.save(brand);
+        brandRepository.save(brand);
 
     }
 
@@ -51,12 +51,12 @@ public class BrandServiceImpl implements BrandService {
     public Page<Brand> getAllBrandSpecification(Map<String, String> params) {
         BrandFilter brandFilter = new BrandFilter();
 
-        if (params.containsKey(KeySpecificationUtil.KEY_NAME)){
+        if (params.containsKey(KeySpecificationUtil.KEY_NAME)) {
             String name = params.get(KeySpecificationUtil.KEY_NAME);
             brandFilter.setBrandName(name);
         }
 
-        if (params.containsKey(KeySpecificationUtil.KEY_ID)){
+        if (params.containsKey(KeySpecificationUtil.KEY_ID)) {
             String id = params.get(KeySpecificationUtil.KEY_ID);
             brandFilter.setBrandId(Long.parseLong(id));
         }
@@ -77,9 +77,9 @@ public class BrandServiceImpl implements BrandService {
 
         Pageable pageable = PageUtil.getPageable(pageNumber, pageSize);
 
-        Page<Brand> brands = brandRepository.findAll(brandSpecification, pageable);
+//        Page<Brand> brands = brandRepository.findAll(brandSpecification, pageable);
 
-        return  brands;
+        return brandRepository.findAll(brandSpecification, pageable);
     }
 
     // pagination
@@ -87,7 +87,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Brand getBrandById(Long id) {
         log.info("fetching brand by id => {}", id);
-        return brandRepository.findById(id).orElseThrow(() -> new NotFoundException("No Brand "+ id +" founded."));
+        return brandRepository.findById(id).orElseThrow(() -> new NotFoundException("No Brand " + id + " founded."));
     }
 
     @Override

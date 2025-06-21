@@ -32,6 +32,6 @@ public class Model {
     private Double version;
 
     @ManyToOne
-    @JoinColumn(name = "brandId")
+    @JoinColumn(name = "brand_id")
     private Brand brand;
 }
