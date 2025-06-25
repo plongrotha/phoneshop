@@ -5,6 +5,7 @@ import com.phoneshop.mapper.ColorMapper;
 import com.phoneshop.model.entity.Color;
 import com.phoneshop.model.response.ApiResponse;
 import com.phoneshop.service.ColorService;
+import com.phoneshop.utils.DateTimeUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class ColorController {
                         .message("Color created successfully")
                         .status(HttpStatus.CREATED.value())
                         .payload(color)
-                        .timestamp(LocalTime.now())
+                        .timestamp(DateTimeUtil.getTime())
                         .build());
     }
 
@@ -50,7 +52,7 @@ public class ColorController {
                         .message("Color all got successfully")
                         .status(HttpStatus.OK.value())
                         .payload(colors)
-                        .timestamp(LocalTime.now())
+                        .timestamp(DateTimeUtil.getTime())
                         .build());
     }
 }

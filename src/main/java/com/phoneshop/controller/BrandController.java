@@ -1,34 +1,23 @@
 package com.phoneshop.controller;
 
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Map;
-
-import com.phoneshop.dto.PageDTO;
-import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.phoneshop.dto.BrandDTO;
+import com.phoneshop.dto.PageDTO;
 import com.phoneshop.mapper.BrandMapper;
 import com.phoneshop.model.entity.Brand;
 import com.phoneshop.model.response.ApiResponse;
 import com.phoneshop.service.BrandService;
-
+import com.phoneshop.utils.DateTimeUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/brands")
@@ -45,7 +34,7 @@ public class BrandController {
         brandService.createBrand(brand);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.builder().success(true).message("Brand created successfully")
-                        .status(HttpStatus.CREATED.value()).payload(brand).timestamp(LocalTime.now()).build());
+                        .status(HttpStatus.CREATED.value()).payload(brand).timestamp(DateTimeUtil.getTime()).build());
     }
 
     @Operation(summary = "Get brand by id", description = "Get brand by id")
@@ -54,7 +43,7 @@ public class BrandController {
         Brand brand = brandService.getBrandById(id);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.builder().success(true).message("Brand retrieved successfully").status(HttpStatus.FOUND.value())
-                        .payload(brand).timestamp(LocalTime.now()).build());
+                        .payload(brand).timestamp(DateTimeUtil.getTime()).build());
     }
 
     @Operation(summary = "Delete brand by id", description = "Delete brand by id")
@@ -63,7 +52,7 @@ public class BrandController {
         brandService.deleteBrandById(id);
 
         return ResponseEntity.ok(ApiResponse.builder().success(true).message("Brand deleted successfully")
-                .status(HttpStatus.OK.value()).timestamp(LocalTime.now()).build());
+                .status(HttpStatus.OK.value()).timestamp(DateTimeUtil.getTime()).build());
     }
 
     @Operation(summary = "Update brand by id", description = "Update brand by id")
@@ -74,7 +63,7 @@ public class BrandController {
         brand.setBrandName(brandDTO.getBrandName());
         return ResponseEntity
                 .ok(ApiResponse.builder().success(true).status(HttpStatus.OK.value()).message("updated successfully")
-                        .payload(brandService.updateBrandById(id, brand)).timestamp(LocalTime.now()).build());
+                        .payload(brandService.updateBrandById(id, brand)).timestamp(DateTimeUtil.getTime()).build());
     }
 
     @Operation(summary = "Get brand specification")
@@ -85,7 +74,8 @@ public class BrandController {
         PageDTO pageDTO = new PageDTO(page);
 
         return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("All brands retrieved successfully")
-                .status(HttpStatus.OK.value()).payload(pageDTO).timestamp(LocalTime.now()).build());
+                .status(HttpStatus.OK.value()).payload(pageDTO).timestamp(DateTimeUtil.getTime()).build());
+        
     }
 
     @GetMapping
@@ -93,6 +83,6 @@ public class BrandController {
         List<Brand> brands = brandService.getAllBrands();
 
         return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("All brands retrieved successfully")
-                .status(HttpStatus.OK.value()).payload(brands).timestamp(LocalTime.now()).build());
+                .status(HttpStatus.OK.value()).payload(brands).timestamp(DateTimeUtil.getTime()).build());
     }
 }

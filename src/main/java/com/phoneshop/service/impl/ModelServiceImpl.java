@@ -43,7 +43,7 @@ public class ModelServiceImpl implements ModelService {
         return list;
     }
 
-    @Cacheable(value = "myCache", key = "#id")
+    @Cacheable(value = "myCache", key = "#brandId")
     @Override
     public List<Model> getByBrandId(Long brandId) {
         List<Model> list = modelRepository.findAllByBrand_BrandId(brandId);

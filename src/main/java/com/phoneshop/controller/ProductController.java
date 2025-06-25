@@ -5,14 +5,15 @@ import com.phoneshop.mapper.ProductMapper;
 import com.phoneshop.model.entity.Product;
 import com.phoneshop.model.response.ApiResponse;
 import com.phoneshop.service.ProductService;
+import com.phoneshop.utils.DateTimeUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -36,36 +37,39 @@ public class ProductController {
                         .message("Product created successfully")
                         .status(HttpStatus.CREATED.value())
                         .payload(product)
-                        .timestamp(LocalTime.now())
+                        .timestamp(DateTimeUtil.getTime())
                         .build());
     }
 
 
     @GetMapping
     public ResponseEntity<?> getAllProducts() {
+
         List<Product> products = productService.getAllProducts();
 
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.ok()
                 .body(ApiResponse.builder()
                         .success(true)
                         .message("Product all get successfully")
                         .status(HttpStatus.OK.value())
                         .payload(products)
-                        .timestamp(LocalTime.now())
+                        .timestamp(DateTimeUtil.getTime())
                         .build());
     }
 
 
+    @Cacheable(value = "myCache", key = "#id")
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable @Valid Long id) {
         Product product = productService.getProductById(id);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.builder()
                         .success(true)
-                        .message("get product successfully")
                         .status(HttpStatus.FOUND.value())
+                        .message("get product successfully")
                         .payload(product)
-                        .timestamp(LocalTime.now())
+                        .timestamp(DateTimeUtil.getTime())
                         .build());
     }
 }

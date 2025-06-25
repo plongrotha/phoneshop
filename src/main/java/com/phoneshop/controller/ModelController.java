@@ -5,15 +5,14 @@ import com.phoneshop.mapper.ModelMapper;
 import com.phoneshop.model.entity.Model;
 import com.phoneshop.model.response.ApiResponse;
 import com.phoneshop.service.ModelService;
+import com.phoneshop.utils.DateTimeUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -36,7 +35,7 @@ public class ModelController {
 
         // and then when return back i convert to DTO
         return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("create model successfully")
-                .payload(modelMapper.toModelDTO(model)).status(HttpStatus.CREATED.value()).timestamp(LocalTime.now()).build());
+                .payload(modelMapper.toModelDTO(model)).status(HttpStatus.CREATED.value()).timestamp(DateTimeUtil.getTime()).build());
     }
 
     @Operation(summary = "Get Model by Id")
@@ -46,7 +45,7 @@ public class ModelController {
         Model response = modelService.getModelById(id);
 
         return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("retrieve model successfully")
-                .payload(response).status(HttpStatus.OK.value()).timestamp(LocalTime.now()).build());
+                .payload(response).status(HttpStatus.OK.value()).timestamp(DateTimeUtil.getTime()).build());
     }
 
     @Operation(summary = "Get All model")
@@ -56,8 +55,13 @@ public class ModelController {
         List<Model> list = modelService.getAllModels();
         List<ModelDTO> dtoList = modelMapper.toListModelDTO(list);
 
-        return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("retrieve model successfully")
-                .payload(list).status(HttpStatus.OK.value()).timestamp(LocalTime.now()).build());
+        return ResponseEntity.ok().body(ApiResponse.builder()
+                .success(true)
+                .status(HttpStatus.OK.value())
+                .message("retrieve model successfully")
+                .payload(list)
+                .timestamp(DateTimeUtil.getTime())
+                .build());
     }
 
     @GetMapping("/{brand-id}/brand")
@@ -67,7 +71,7 @@ public class ModelController {
         List<ModelDTO> dtoList = modelMapper.toListModelDTO(model);
 
         return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("retrieve model successfully")
-                .payload(dtoList).status(HttpStatus.OK.value()).timestamp(LocalTime.now()).build());
+                .payload(dtoList).status(HttpStatus.OK.value()).timestamp(DateTimeUtil.getTime()).build());
     }
 
 }

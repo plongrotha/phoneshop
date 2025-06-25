@@ -2,11 +2,12 @@ package com.phoneshop.service.impl;
 
 import com.phoneshop.dto.ProductImportDTO;
 import com.phoneshop.exception.NotFoundException;
+import com.phoneshop.mapper.ProductMapper;
 import com.phoneshop.model.entity.Color;
 import com.phoneshop.model.entity.Model;
 import com.phoneshop.model.entity.Product;
-import com.phoneshop.repository.ColorRepository;
-import com.phoneshop.repository.ModelRepository;
+import com.phoneshop.model.entity.ProductImportHistory;
+import com.phoneshop.repository.ProductImportHistoryRepository;
 import com.phoneshop.repository.ProductRepository;
 import com.phoneshop.service.ColorService;
 import com.phoneshop.service.ModelService;
@@ -22,9 +23,10 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductImportHistoryRepository productImportHistoryRepository;
     private final ModelService modelService;
     private final ColorService colorService;
-    private final ColorRepository colorRepository;
+    private final ProductMapper productMapper;
 
     @Override
     public Product saveProduct(Product product) {
@@ -49,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAllProducts() {
         List<Product> products = productRepository.findAll();
         if (products.isEmpty()) {
-            throw new NotFoundException("No products found");
+            throw new NotFoundException("No products found.");
         }
         return products;
     }
@@ -57,11 +59,12 @@ public class ProductServiceImpl implements ProductService {
     @Cacheable(value = "myCache", key = "#productId")
     @Override
     public Product getProductById(Long productId) {
-        return productRepository.findById(productId).orElseThrow(() -> new NotFoundException(" product " + productId + " not found"));
+        return productRepository.findById(productId).orElseThrow(() -> new NotFoundException(" product " + productId + " not found."));
     }
 
     @Override
     public void importProduct(ProductImportDTO productImportDTO) {
-
+        ProductImportHistory product = productMapper.toProduct(productImportDTO);
+        productImportHistoryRepository.save(product);
     }
 }
