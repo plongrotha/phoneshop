@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.persistence.EntityExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.validation.FieldError;
@@ -15,24 +16,24 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 @ControllerAdvice
 public class GlobalException {
 
-	@ExceptionHandler(NotFoundException.class)
-	public ProblemDetail handleNotFoundException(NotFoundException e) {
-		ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-		problemDetail.setTitle("Not Found.");
-		return problemDetail;
-	}
-
-   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ProblemDetail handleValidationException(MethodArgumentNotValidException e){
-    ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-    detail.setTitle("validation is false.");
-    Map<String, String> err = new HashMap<>();
-    for(FieldError fieldError : e.getBindingResult().getFieldErrors()){
-      err.put(fieldError.getField(), fieldError.getDefaultMessage());
+    @ExceptionHandler(NotFoundException.class)
+    public ProblemDetail handleNotFoundException(NotFoundException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+        problemDetail.setTitle("Not Found.");
+        return problemDetail;
     }
-    detail.setProperty("errors", err);
-    return detail;
-  }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ProblemDetail handleValidationException(MethodArgumentNotValidException e) {
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        detail.setTitle("validation is false.");
+        Map<String, String> err = new HashMap<>();
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+            err.put(fieldError.getField(), fieldError.getDefaultMessage());
+        }
+        detail.setProperty("errors", err);
+        return detail;
+    }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ProblemDetail handleMethodValidationException(HandlerMethodValidationException e) {
@@ -61,6 +62,14 @@ public class GlobalException {
     public ProblemDetail handleBrandAlreadyExists(BrandAlreadyExistsException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         problemDetail.setTitle("Brand Conflict");
+        problemDetail.setDetail(ex.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(EntityExistsException.class)
+    public ProblemDetail handleEntityExistsException(EntityExistsException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problemDetail.setTitle("Entity Exists");
         problemDetail.setDetail(ex.getMessage());
         return problemDetail;
     }

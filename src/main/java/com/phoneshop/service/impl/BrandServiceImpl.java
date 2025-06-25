@@ -11,6 +11,9 @@ import com.phoneshop.utils.KeySpecificationUtil;
 import com.phoneshop.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,7 +38,7 @@ public class BrandServiceImpl implements BrandService {
         if (existBrand.isPresent()) {
             throw new BrandAlreadyExistsException("Brand '" + brand.getBrandName() + "' already exists");
         }
-            brandRepository.save(brand);
+        brandRepository.save(brand);
 
     }
 
@@ -51,14 +54,14 @@ public class BrandServiceImpl implements BrandService {
     public Page<Brand> getAllBrandSpecification(Map<String, String> params) {
         BrandFilter brandFilter = new BrandFilter();
 
-        if (params.containsKey(KeySpecificationUtil.KEY_NAME)){
+        if (params.containsKey(KeySpecificationUtil.KEY_NAME)) {
             String name = params.get(KeySpecificationUtil.KEY_NAME);
             brandFilter.setBrandName(name);
         }
 
-        if (params.containsKey(KeySpecificationUtil.KEY_ID)){
+        if (params.containsKey(KeySpecificationUtil.KEY_ID)) {
             String id = params.get(KeySpecificationUtil.KEY_ID);
-            brandFilter.setBrandId(Integer.parseInt(id));
+            brandFilter.setBrandId(Long.parseLong(id));
         }
 
         BrandSpecification brandSpecification = new BrandSpecification(brandFilter);
@@ -77,19 +80,22 @@ public class BrandServiceImpl implements BrandService {
 
         Pageable pageable = PageUtil.getPageable(pageNumber, pageSize);
 
-        Page<Brand> brands = brandRepository.findAll(brandSpecification, pageable);
+//        Page<Brand> brands = brandRepository.findAll(brandSpecification, pageable);
 
-        return  brands;
+        return brandRepository.findAll(brandSpecification, pageable);
     }
 
     // pagination
 
+    @Cacheable(value = "myCache", key = "#id")
     @Override
     public Brand getBrandById(Long id) {
         log.info("fetching brand by id => {}", id);
-        return brandRepository.findById(id).orElseThrow(() -> new NotFoundException("No Brand "+ id +" founded."));
+        return brandRepository.findById(id).orElseThrow(() -> new NotFoundException("No Brand " + id + " founded."));
     }
 
+
+    @CachePut(value = "myCache", key = "#id")
     @Override
     public Brand updateBrandById(Long id, Brand brand) {
         Brand existingBrand = getBrandById(id);
@@ -98,6 +104,7 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.save(existingBrand);
     }
 
+    @CacheEvict(value = "myCache", key = "#id")
     @Override
     public void deleteBrandById(Long id) {
         Brand brand = getBrandById(id);

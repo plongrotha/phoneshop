@@ -18,7 +18,7 @@ public class ApiResponse<T>{
   private Boolean success;
   private String message;
   private T payload;
-  private HttpStatus status;
+  private int status;
   private LocalTime timestamp;
 
 }

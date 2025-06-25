@@ -23,7 +23,7 @@ public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "model_id")
-    private Integer modelId;
+    private Long modelId;
     
     @Column(name = "model_name")
     private String modelName;
@@ -32,6 +32,6 @@ public class Model {
     private Double version;
 
     @ManyToOne
-    @JoinColumn(name = "brandId")
+    @JoinColumn(name = "brand_id")
     private Brand brand;
 }
