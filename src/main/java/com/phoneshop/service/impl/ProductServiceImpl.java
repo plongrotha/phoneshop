@@ -1,5 +1,6 @@
 package com.phoneshop.service.impl;
 
+import com.phoneshop.dto.ProductImportDTO;
 import com.phoneshop.exception.NotFoundException;
 import com.phoneshop.model.entity.Color;
 import com.phoneshop.model.entity.Model;
@@ -57,5 +58,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Long productId) {
         return productRepository.findById(productId).orElseThrow(() -> new NotFoundException(" product " + productId + " not found"));
+    }
+
+    @Override
+    public void importProduct(ProductImportDTO productImportDTO) {
+
     }
 }
