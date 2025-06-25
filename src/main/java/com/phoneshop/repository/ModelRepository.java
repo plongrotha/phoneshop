@@ -3,6 +3,10 @@ package com.phoneshop.repository;
 import com.phoneshop.model.entity.Model;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ModelRepository extends JpaRepository<Model, Long>{
+import java.util.List;
+
+public interface ModelRepository extends JpaRepository<Model, Long> {
+
+    List<Model> findAllByBrand_BrandId(Long brandId);
 
 }

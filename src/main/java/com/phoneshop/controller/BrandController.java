@@ -45,7 +45,7 @@ public class BrandController {
         brandService.createBrand(brand);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.builder().success(true).message("Brand created successfully")
-                        .status(HttpStatus.CREATED).payload(brand).timestamp(LocalTime.now()).build());
+                        .status(HttpStatus.CREATED.value()).payload(brand).timestamp(LocalTime.now()).build());
     }
 
     @Operation(summary = "Get brand by id", description = "Get brand by id")
@@ -53,7 +53,7 @@ public class BrandController {
     public ResponseEntity<?> getBrandById(@PathVariable("brand-id") @Positive Long id) {
         Brand brand = brandService.getBrandById(id);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponse.builder().success(true).message("Brand retrieved successfully").status(HttpStatus.OK)
+                .body(ApiResponse.builder().success(true).message("Brand retrieved successfully").status(HttpStatus.FOUND.value())
                         .payload(brand).timestamp(LocalTime.now()).build());
     }
 
@@ -63,7 +63,7 @@ public class BrandController {
         brandService.deleteBrandById(id);
 
         return ResponseEntity.ok(ApiResponse.builder().success(true).message("Brand deleted successfully")
-                .status(HttpStatus.OK).timestamp(LocalTime.now()).build());
+                .status(HttpStatus.OK.value()).timestamp(LocalTime.now()).build());
     }
 
     @Operation(summary = "Update brand by id", description = "Update brand by id")
@@ -73,7 +73,7 @@ public class BrandController {
         Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
         brand.setBrandName(brandDTO.getBrandName());
         return ResponseEntity
-                .ok(ApiResponse.builder().success(true).status(HttpStatus.OK).message("updated successfully")
+                .ok(ApiResponse.builder().success(true).status(HttpStatus.OK.value()).message("updated successfully")
                         .payload(brandService.updateBrandById(id, brand)).timestamp(LocalTime.now()).build());
     }
 
@@ -85,7 +85,7 @@ public class BrandController {
         PageDTO pageDTO = new PageDTO(page);
 
         return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("All brands retrieved successfully")
-                .status(HttpStatus.OK).payload(pageDTO).timestamp(LocalTime.now()).build());
+                .status(HttpStatus.OK.value()).payload(pageDTO).timestamp(LocalTime.now()).build());
     }
 
     @GetMapping
@@ -93,6 +93,6 @@ public class BrandController {
         List<Brand> brands = brandService.getAllBrands();
 
         return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("All brands retrieved successfully")
-                .status(HttpStatus.OK).payload(brands).timestamp(LocalTime.now()).build());
+                .status(HttpStatus.OK.value()).payload(brands).timestamp(LocalTime.now()).build());
     }
 }

@@ -12,6 +12,8 @@ public interface ModelService {
 
     List<Model> getAllModels();
 
-    void deleteModelByModelId(Long id);
+    List<Model> getByBrandId(Long brandId);
 
+
+    // get all by brand id ; will do
 }

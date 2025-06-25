@@ -21,7 +21,7 @@ public class Brand {
     @Column(name = "brand_id")
     private Long brandId;
 
-    @Column(name = "brand_name", nullable = false)
+    @Column(name = "brand_name", nullable = false, unique = true)
     private String brandName;
     
 }
