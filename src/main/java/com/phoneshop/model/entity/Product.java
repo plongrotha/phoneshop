@@ -40,6 +40,4 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "color_id")
     private Color color;
-
-
 }

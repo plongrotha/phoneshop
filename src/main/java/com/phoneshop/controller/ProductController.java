@@ -1,9 +1,11 @@
 package com.phoneshop.controller;
 
 import com.phoneshop.dto.ProductDTO;
+import com.phoneshop.dto.ProductImportDTO;
 import com.phoneshop.mapper.ProductMapper;
 import com.phoneshop.model.entity.Product;
 import com.phoneshop.model.response.ApiResponse;
+import com.phoneshop.model.response.ProductReponse;
 import com.phoneshop.service.ProductService;
 import com.phoneshop.utils.DateTimeUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,44 +34,45 @@ public class ProductController {
         productService.saveProduct(product);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.builder()
-                        .success(true)
-                        .message("Product created successfully")
-                        .status(HttpStatus.CREATED.value())
-                        .payload(product)
-                        .timestamp(DateTimeUtil.getTime())
-                        .build());
+                .body(ApiResponse.builder().success(true).message("Product created successfully")
+                        .status(HttpStatus.CREATED.value()).payload(product).timestamp(DateTimeUtil.getTime()).build());
     }
 
-
+    @Operation(summary = "Get all products")
     @GetMapping
     public ResponseEntity<?> getAllProducts() {
 
         List<Product> products = productService.getAllProducts();
+        List<ProductReponse> productResponse = productMapper.toProductReponseList(products);
 
-        return ResponseEntity.ok()
-                .body(ApiResponse.builder()
-                        .success(true)
-                        .message("Product all get successfully")
-                        .status(HttpStatus.OK.value())
-                        .payload(products)
-                        .timestamp(DateTimeUtil.getTime())
-                        .build());
+        return ResponseEntity.ok().body(ApiResponse.builder().success(true).message("Product all get successfully")
+                .status(HttpStatus.OK.value()).payload(productResponse).timestamp(DateTimeUtil.getTime()).build());
     }
 
-
-    @Cacheable(value = "myCache", key = "#id")
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable @Valid Long id) {
-        Product product = productService.getProductById(id);
-
+    @Operation(summary = "Get a product")
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getProductById(@PathVariable @Valid Long productId) {
+        Product product = productService.getProductById(productId);
+        ProductReponse reponse = productMapper.toProductReponse(product);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.builder()
                         .success(true)
                         .status(HttpStatus.FOUND.value())
                         .message("get product successfully")
-                        .payload(product)
+                        .payload(reponse)
                         .timestamp(DateTimeUtil.getTime())
+                        .build());
+    }
+
+    @Operation(summary = "Import product")
+    @PostMapping("/import-product")
+    public ResponseEntity<?> importProducts(@RequestBody @Valid ProductImportDTO productImportDTO) {
+
+        productService.importProduct(productImportDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.builder().success(true).status(HttpStatus.CREATED.value()).message("Product imported successfully")
+                        .payload("import " + productImportDTO.getProductId() + " successfully").timestamp(DateTimeUtil.getTime())
                         .build());
     }
 }

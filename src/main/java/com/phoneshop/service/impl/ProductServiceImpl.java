@@ -13,15 +13,19 @@ import com.phoneshop.service.ColorService;
 import com.phoneshop.service.ModelService;
 import com.phoneshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductRepository productRepository;
     private final ProductImportHistoryRepository productImportHistoryRepository;
     private final ModelService modelService;
@@ -37,7 +41,6 @@ public class ProductServiceImpl implements ProductService {
         Long colorId = product.getColor().getColorId();
         Color color = colorService.getColorById(colorId);
 
-
         product.setModel(model);
         product.setColor(color);
 
@@ -50,6 +53,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProducts() {
         List<Product> products = productRepository.findAll();
+        log.info("getAllProducts called : " + products.size());
+
         if (products.isEmpty()) {
             throw new NotFoundException("No products found.");
         }
@@ -59,12 +64,34 @@ public class ProductServiceImpl implements ProductService {
     @Cacheable(value = "myCache", key = "#productId")
     @Override
     public Product getProductById(Long productId) {
-        return productRepository.findById(productId).orElseThrow(() -> new NotFoundException(" product " + productId + " not found."));
+        log.info("getProductById called : " + productId);
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException(" product " + productId + " not found."));
     }
 
+    //    @Cacheable("myCache")
     @Override
     public void importProduct(ProductImportDTO productImportDTO) {
-        ProductImportHistory product = productMapper.toProduct(productImportDTO);
-        productImportHistoryRepository.save(product);
+
+//        new Product();
+//        Product product;
+        // update available product unit
+        Product product = getProductById(productImportDTO.getProductId());
+        Integer currentUnit = product.getAvailableUnit() != null ? product.getAvailableUnit() : 0;
+        Integer availableUnit = product.getAvailableUnit() != null ? productImportDTO.getImportUnit() : 0;
+        product.setAvailableUnit(availableUnit + currentUnit);
+
+        // update price
+        BigDecimal currentPrice = product.getSalePrice() != null ? product.getSalePrice() : BigDecimal.ZERO;
+        BigDecimal price = product.getSalePrice() != null ? (productImportDTO.getImportPrice()) : BigDecimal.ZERO;
+        product.setSalePrice(price.add(currentPrice));
+
+        productRepository.save(product);
+
+        // save product import history
+        ProductImportHistory importHistory = productMapper.toProductImportHistory(productImportDTO, product);
+        productImportHistoryRepository.save(importHistory);
+
+
     }
 }

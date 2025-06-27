@@ -13,15 +13,14 @@ import java.time.Duration;
 @EnableCaching
 public class CacheConfig {
 
-    @Bean
-    public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("myCache");
-        cacheManager.setCaffeine(cacheBuilder());
-        return cacheManager;
-    }
+	@Bean
+	CacheManager cacheManager() {
+		CaffeineCacheManager cacheManager = new CaffeineCacheManager("myCache");
+		cacheManager.setCaffeine(cacheBuilder());
+		return cacheManager;
+	}
 
-    Caffeine<Object, Object> cacheBuilder() {
-        return Caffeine.newBuilder().initialCapacity(100).maximumSize(500).expireAfterAccess(Duration.ofMinutes(10));
-    }
+	Caffeine<Object, Object> cacheBuilder() {
+		return Caffeine.newBuilder().initialCapacity(100).maximumSize(500).expireAfterAccess(Duration.ofMinutes(10));
+	}
 }
-

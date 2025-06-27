@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -22,7 +21,7 @@ public class ProductImportHistory {
     private Long productImportHistoryId;
 
     @Column(name = "import_date")
-    private LocalDateTime importDate;
+    private LocalDate importDate;
 
     @Column(name = "import_unit")
     private Integer importUnit;

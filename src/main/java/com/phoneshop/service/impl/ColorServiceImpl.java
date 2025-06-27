@@ -6,6 +6,7 @@ import com.phoneshop.model.entity.Color;
 import com.phoneshop.repository.ColorRepository;
 import com.phoneshop.service.ColorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,6 @@ import java.util.Optional;
 public class ColorServiceImpl implements ColorService {
 
     private final ColorRepository colorRepository;
-
 
     @Override
     public Color createColor(Color color) {
@@ -36,6 +36,13 @@ public class ColorServiceImpl implements ColorService {
         return colorRepository.findById(colorId).orElseThrow(() -> new NotFoundException("Color id " + colorId + " not found"));
     }
 
+    @CacheEvict(value = "myCache", key = "#colorId")
+    @Override
+    public void deleteColor(Long colorId) {
+        colorRepository.deleteById(colorId);
+    }
+
+    @Cacheable("myCache")
     @Override
     public List<Color> getAllColors() {
 
@@ -45,4 +52,6 @@ public class ColorServiceImpl implements ColorService {
         }
         return colors;
     }
+
+
 }
