@@ -38,10 +38,10 @@ public class ProductController {
                         .status(HttpStatus.CREATED.value()).payload(product).timestamp(DateTimeUtil.getTime()).build());
     }
 
+    @Cacheable( value = "myCache")
     @Operation(summary = "Get all products")
     @GetMapping
     public ResponseEntity<?> getAllProducts() {
-
         List<Product> products = productService.getAllProducts();
         List<ProductReponse> productResponse = productMapper.toProductReponseList(products);
 

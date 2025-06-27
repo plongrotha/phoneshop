@@ -73,9 +73,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void importProduct(ProductImportDTO productImportDTO) {
 
-//        new Product();
-//        Product product;
-        // update available product unit
         Product product = getProductById(productImportDTO.getProductId());
         Integer currentUnit = product.getAvailableUnit() != null ? product.getAvailableUnit() : 0;
         Integer availableUnit = product.getAvailableUnit() != null ? productImportDTO.getImportUnit() : 0;

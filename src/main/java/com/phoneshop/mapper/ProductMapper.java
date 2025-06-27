@@ -25,13 +25,6 @@ public interface ProductMapper {
     @Mapping(target = "product", source = "product")
     ProductImportHistory toProductImportHistory(ProductImportDTO productImportDTO, Product product);
 
-//    private Long productId;
-//    private String productName;
-//    private Integer availableUnit;
-//    private String imageUrl;
-//    private BigDecimal salePrice;
-//    private String modelName;
-//    private String colorName;
     @Mapping(target = "colorName", source = "color.colorName")
     @Mapping(target = "modelName", source = "model.modelName")
     ProductReponse toProductReponse(Product product);
@@ -40,5 +33,4 @@ public interface ProductMapper {
 //    @Mapping(target = "modelName", source = "model.modelName")
 //    @Mapping(target = "colorName", source = "color.colorName")
     List<ProductReponse> toProductReponseList(List<Product> productList);
-
 }
