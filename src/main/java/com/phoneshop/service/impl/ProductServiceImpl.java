@@ -74,14 +74,20 @@ public class ProductServiceImpl implements ProductService {
     public void importProduct(ProductImportDTO productImportDTO) {
 
         Product product = getProductById(productImportDTO.getProductId());
-        Integer currentUnit = product.getAvailableUnit() != null ? product.getAvailableUnit() : 0;
-        Integer availableUnit = product.getAvailableUnit() != null ? productImportDTO.getImportUnit() : 0;
-        product.setAvailableUnit(availableUnit + currentUnit);
+
+        int currentUnit = 0;
+        if (product.getAvailableUnit() != null) {
+            currentUnit = product.getAvailableUnit();
+        }
+        product.setAvailableUnit(currentUnit + productImportDTO.getImportUnit());
 
         // update price
-        BigDecimal currentPrice = product.getSalePrice() != null ? product.getSalePrice() : BigDecimal.ZERO;
-        BigDecimal price = product.getSalePrice() != null ? (productImportDTO.getImportPrice()) : BigDecimal.ZERO;
-        product.setSalePrice(price.add(currentPrice));
+        BigDecimal currentPrice = BigDecimal.valueOf(0);
+        if (product.getSalePrice() != null) {
+            currentPrice = product.getSalePrice();
+        }
+
+        product.setSalePrice(currentPrice.add(productImportDTO.getImportPrice()));
 
         productRepository.save(product);
 
