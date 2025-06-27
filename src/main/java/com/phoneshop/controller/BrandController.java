@@ -78,6 +78,7 @@ public class BrandController {
         
     }
 
+    @Operation(summary = "Get all Brands")
     @GetMapping
     public ResponseEntity<?> getAllBrands() {
         List<Brand> brands = brandService.getAllBrands();
