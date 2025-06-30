@@ -1,6 +1,8 @@
 package com.phoneshop.service.impl;
 
+import com.phoneshop.dto.PriceDTO;
 import com.phoneshop.dto.ProductImportDTO;
+import com.phoneshop.exception.EntityExistException;
 import com.phoneshop.exception.NotFoundException;
 import com.phoneshop.mapper.ProductMapper;
 import com.phoneshop.model.entity.Color;
@@ -46,7 +48,12 @@ public class ProductServiceImpl implements ProductService {
 
         // this for get model's name , color's name to combine it together
         String name = "%s %s".formatted(model.getModelName(), color.getColorName());
-        product.setProductName(name);
+
+        if (product.getProductName() == name) {
+            throw new EntityExistException("Product already exists");
+        } else {
+            product.setProductName(name);
+        }
         return productRepository.save(product);
     }
 
@@ -61,15 +68,13 @@ public class ProductServiceImpl implements ProductService {
         return products;
     }
 
-    @Cacheable(value = "myCache", key = "#productId")
+    //    @Cacheable(value = "myCache", key = "#productId")
     @Override
     public Product getProductById(Long productId) {
         log.info("getProductById called : " + productId);
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException(" product " + productId + " not found."));
+        return productRepository.findById(productId).orElseThrow(() -> new NotFoundException(" product " + productId + " not found."));
     }
 
-    //    @Cacheable("myCache")
     @Override
     public void importProduct(ProductImportDTO productImportDTO) {
 
@@ -81,13 +86,13 @@ public class ProductServiceImpl implements ProductService {
         }
         product.setAvailableUnit(currentUnit + productImportDTO.getImportUnit());
 
-        // update price
-        BigDecimal currentPrice = BigDecimal.valueOf(0);
-        if (product.getSalePrice() != null) {
-            currentPrice = product.getSalePrice();
-        }
-
-        product.setSalePrice(currentPrice.add(productImportDTO.getImportPrice()));
+//        // update price
+//        BigDecimal currentPrice = BigDecimal.valueOf(0);
+//        if (product.getSalePrice() != null) {
+//            currentPrice = product.getSalePrice();
+//        }
+//
+//        product.setSalePrice(currentPrice.add(productImportDTO.getImportPrice()));
 
         productRepository.save(product);
 
@@ -96,5 +101,13 @@ public class ProductServiceImpl implements ProductService {
         productImportHistoryRepository.save(importHistory);
 
 
+    }
+
+    @Override
+    public void setProductPrice(Long productId, BigDecimal price) {
+
+        Product product = getProductById(productId);
+        product.setSalePrice(price);
+        productRepository.save(product);
     }
 }

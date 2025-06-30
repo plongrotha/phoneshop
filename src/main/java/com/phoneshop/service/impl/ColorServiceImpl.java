@@ -30,19 +30,19 @@ public class ColorServiceImpl implements ColorService {
         return colorRepository.save(color);
     }
 
-    @Cacheable(value = "myCache", key = "#colorId")
+//    @Cacheable(value = "myCache", key = "#colorId")
     @Override
     public Color getColorById(Long colorId) {
         return colorRepository.findById(colorId).orElseThrow(() -> new NotFoundException("Color id " + colorId + " not found"));
     }
 
-    @CacheEvict(value = "myCache", key = "#colorId")
+//    @CacheEvict(value = "myCache", key = "#colorId")
     @Override
     public void deleteColor(Long colorId) {
         colorRepository.deleteById(colorId);
     }
 
-    @Cacheable("myCache")
+//    @Cacheable("myCache")
     @Override
     public List<Color> getAllColors() {
 

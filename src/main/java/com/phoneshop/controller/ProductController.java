@@ -1,5 +1,6 @@
 package com.phoneshop.controller;
 
+import com.phoneshop.dto.PriceDTO;
 import com.phoneshop.dto.ProductDTO;
 import com.phoneshop.dto.ProductImportDTO;
 import com.phoneshop.mapper.ProductMapper;
@@ -38,7 +39,7 @@ public class ProductController {
                         .status(HttpStatus.CREATED.value()).payload(product).timestamp(DateTimeUtil.getTime()).build());
     }
 
-    @Cacheable( value = "myCache")
+    @Cacheable(value = "myCache")
     @Operation(summary = "Get all products")
     @GetMapping
     public ResponseEntity<?> getAllProducts() {
@@ -73,6 +74,19 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.builder().success(true).status(HttpStatus.CREATED.value()).message("Product imported successfully")
                         .payload("import " + productImportDTO.getProductId() + " successfully").timestamp(DateTimeUtil.getTime())
+                        .build());
+    }
+
+    @PostMapping("/{product-id}/setPrice")
+    public ResponseEntity<?> setPrice(@Valid Long id, @RequestBody PriceDTO priceDTO) {
+        productService.setProductPrice(id, priceDTO.getPrice());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.builder()
+                        .success(true)
+                        .status(HttpStatus.OK.value())
+                        .message("get product successfully")
+                        .payload("successfully")
+                        .timestamp(DateTimeUtil.getTime())
                         .build());
     }
 }

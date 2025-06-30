@@ -21,7 +21,7 @@ public interface ProductMapper {
     Product toProduct(ProductDTO productDTO);
 
     @Mapping(target = "productImportHistoryId", ignore = true)
-    @Mapping(target = "pricePerUnit", source = "productImportDTO.importPrice")
+//    @Mapping(target = "pricePerUnit", source = "productImportDTO.importPrice")
     @Mapping(target = "product", source = "product")
     ProductImportHistory toProductImportHistory(ProductImportDTO productImportDTO, Product product);
 

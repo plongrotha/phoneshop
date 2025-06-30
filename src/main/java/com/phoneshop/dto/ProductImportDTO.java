@@ -22,9 +22,9 @@ public class ProductImportDTO {
     @Positive
     private Integer importUnit;
 
-    @NotNull
-    @Positive
-    private BigDecimal importPrice;
+//    @NotNull
+//    @Positive
+//    private BigDecimal importPrice;
 
     private LocalDate importDate;
 

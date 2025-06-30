@@ -1,9 +1,11 @@
 package com.phoneshop.service;
 
 
+import com.phoneshop.dto.PriceDTO;
 import com.phoneshop.dto.ProductImportDTO;
 import com.phoneshop.model.entity.Product;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
@@ -15,5 +17,7 @@ public interface ProductService {
     Product getProductById(Long productId);
 
     void importProduct(ProductImportDTO productImportDTO);
+
+    void setProductPrice(Long productId, BigDecimal price);
 
 }
