@@ -26,8 +26,8 @@ public class ProductImportHistory {
     @Column(name = "import_unit")
     private Integer importUnit;
 
-    @Column(name = "price_per_unit")
-    private BigDecimal pricePerUnit;
+//    @Column(name = "price_per_unit")
+//    private BigDecimal pricePerUnit;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")

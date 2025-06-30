@@ -66,7 +66,6 @@ public class ProductServiceImpl implements ProductService {
         return products;
     }
 
-    //    @Cacheable(value = "myCache", key = "#productId")
     @Override
     public Product getProductById(Long productId) {
         log.info("getProductById called : {}", productId);
