@@ -1,6 +1,5 @@
 package com.phoneshop.service.impl;
 
-import com.phoneshop.dto.PriceDTO;
 import com.phoneshop.dto.ProductImportDTO;
 import com.phoneshop.exception.EntityExistException;
 import com.phoneshop.exception.NotFoundException;
@@ -17,7 +16,6 @@ import com.phoneshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -60,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProducts() {
         List<Product> products = productRepository.findAll();
-        log.info("getAllProducts called : " + products.size());
+        log.info("all product in database : {}", products.size());
 
         if (products.isEmpty()) {
             throw new NotFoundException("No products found.");
@@ -71,8 +69,9 @@ public class ProductServiceImpl implements ProductService {
     //    @Cacheable(value = "myCache", key = "#productId")
     @Override
     public Product getProductById(Long productId) {
-        log.info("getProductById called : " + productId);
-        return productRepository.findById(productId).orElseThrow(() -> new NotFoundException(" product " + productId + " not found."));
+        log.info("getProductById called : {}", productId);
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException(" product " + productId + " not found."));
     }
 
     @Override
@@ -85,14 +84,6 @@ public class ProductServiceImpl implements ProductService {
             currentUnit = product.getAvailableUnit();
         }
         product.setAvailableUnit(currentUnit + productImportDTO.getImportUnit());
-
-//        // update price
-//        BigDecimal currentPrice = BigDecimal.valueOf(0);
-//        if (product.getSalePrice() != null) {
-//            currentPrice = product.getSalePrice();
-//        }
-//
-//        product.setSalePrice(currentPrice.add(productImportDTO.getImportPrice()));
 
         productRepository.save(product);
 
