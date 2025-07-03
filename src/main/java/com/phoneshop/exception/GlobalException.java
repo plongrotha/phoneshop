@@ -16,6 +16,17 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 @ControllerAdvice
 public class GlobalException {
 
+
+    @ExceptionHandler(ApiException.class)
+    public ProblemDetail handleApiException(ApiException apiException) {
+
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle("Bad request");
+        problemDetail.setDetail(apiException.getMessage());
+
+        return problemDetail;
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ProblemDetail handleNotFoundException(NotFoundException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
