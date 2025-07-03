@@ -100,4 +100,11 @@ public class ProductServiceImpl implements ProductService {
         product.setSalePrice(price);
         productRepository.save(product);
     }
+
+    @Override
+    public void validateStock(Long productId, Integer numberOfUnit) {
+
+
+
+    }
 }

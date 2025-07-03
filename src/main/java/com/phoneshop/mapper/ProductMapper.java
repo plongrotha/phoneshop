@@ -32,5 +32,4 @@ public interface ProductMapper {
 //
 //    @Mapping(target = "modelName", source = "model.modelName")
 //    @Mapping(target = "colorName", source = "color.colorName")
-    List<ProductReponse> toProductReponseList(List<Product> productList);
 }

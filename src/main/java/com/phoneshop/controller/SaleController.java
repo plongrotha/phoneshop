@@ -1,5 +1,6 @@
 package com.phoneshop.controller;
 
+import com.phoneshop.dto.SaleDTO;
 import com.phoneshop.model.entity.Product;
 import com.phoneshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +17,9 @@ public class SaleController {
 
     private final ProductService productService;
 
-
     @PostMapping
-    public ResponseEntity<?> sale(@RequestBody Product product) {
+    public ResponseEntity<?> sale(@RequestBody SaleDTO dto) {
 
         return null;
     }
-
-
-
 }
